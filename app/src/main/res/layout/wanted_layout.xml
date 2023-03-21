@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".WantedRecyclerActivity"
-    android:id="@+id/wantedLayout">
+    android:id="@+id/wantedLayout"
+    android:layout_margin="8dp">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/wantedImage" />
+        android:id="@+id/wantedImage"
+        android:src="@drawable/ic_launcher_background"
+        android:background="#000000"
+        android:padding="1dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/wantedName" />
+        android:id="@+id/wantedName"
+        android:layout_toRightOf="@id/wantedImage"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="50dp"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wantedSubject"
+        android:layout_below="@id/wantedName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="50dp"
+        android:fontFamily="sans-serif-black" />
 
 </RelativeLayout>

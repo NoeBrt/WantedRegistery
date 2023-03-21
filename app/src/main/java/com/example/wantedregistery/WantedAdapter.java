@@ -33,9 +33,11 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int
             position) {
         ((ViewHolderWanted)
-                holder).getImageViewPhoto().setImageURI(P.get(position).getPhoto());
+                holder).getImageViewPhoto().setImageBitmap(P.get(position).getPhoto());
         ((ViewHolderWanted)
                 holder).getTextViewName().setText(P.get(position).getName());
+        ((ViewHolderWanted)
+                holder).getTextViewSubject().setText(P.get(position).getSubject());
     }
 
     @Override
@@ -47,16 +49,23 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         private final ImageView photo;
         private final TextView name;
+        private final TextView subject;
+
         public ViewHolderWanted(View view) {
             super(view);
             photo = view.findViewById(R.id.wantedImage);
             name = view.findViewById(R.id.wantedName);
+            subject = view.findViewById(R.id.wantedSubject);
         }
 
         public ImageView getImageViewPhoto() { return photo; }
 
         public TextView getTextViewName() {
             return name;
+        }
+
+        public TextView getTextViewSubject() {
+            return subject;
         }
     }
 }

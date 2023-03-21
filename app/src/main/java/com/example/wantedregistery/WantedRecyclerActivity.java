@@ -1,5 +1,6 @@
 package com.example.wantedregistery;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,13 +37,15 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wanted_recycler);
 
-        Uri imageUri = Uri.parse("https://www.fbi.gov/wanted/kidnap/");
+        WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
+        requestTask.execute();
     }
 
-    private class RequestTask extends AsyncTask<Integer, Void, ArrayList<WantedPerson>> {
+    @Deprecated
+    private class RequestTask extends AsyncTask<Void, Void, ArrayList<WantedPerson>> {
 
         @Override
-        protected ArrayList<WantedPerson> doInBackground(Integer... nb) {
+        protected ArrayList<WantedPerson> doInBackground(Void... voids) {
             ArrayList<WantedPerson> response = new ArrayList<>();
             try {
                 //Exécution de la requête HTTP
@@ -61,9 +64,10 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         private String requete() {
             String response = "";
+            System.out.println("Testing request");
             try {
                 HttpURLConnection connection = null;
-                URL url = new URL("https://api.fbi.gov/wanted/v1/list");
+                URL url = new URL("https://api.fbi.gov/wanted/v1");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
@@ -94,8 +98,9 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                 JSONArray results = jso.getJSONArray("items");
                 for (int i = 0; i < 10; i++) {
                     String name = results.getJSONObject(i).getString("title");
-                    Uri photo = Uri.parse(results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb"));
-                    WantedPerson p = new WantedPerson(photo, name);
+                    String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
+                    String subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
+                    WantedPerson p = new WantedPerson(photoURL, name, subject);
                     response.add(p);
                 }
             }
@@ -103,7 +108,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             return response;
         }
 
-        protected void onPostExecute(ArrayList<WantedPerson> result) {
+        protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
                 WantedAdapter myAdapter;
                 RecyclerView recycler = (RecyclerView)
