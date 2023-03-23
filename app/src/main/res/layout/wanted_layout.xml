@@ -21,7 +21,7 @@
         android:id="@+id/wantedName"
         android:layout_toRightOf="@id/wantedImage"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="70dp"
         android:fontFamily="sans-serif-black"
         android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
         android:id="@+id/wantedSubject"
         android:layout_below="@id/wantedName"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="70dp"
         android:fontFamily="sans-serif-black" />
 
 </RelativeLayout>

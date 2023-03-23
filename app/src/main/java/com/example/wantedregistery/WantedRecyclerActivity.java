@@ -31,11 +31,14 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
     ImageView photoView;
     TextView nameView;
+    DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wanted_recycler);
+
+        db = new DBHandler(this);
 
         WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
         requestTask.execute();

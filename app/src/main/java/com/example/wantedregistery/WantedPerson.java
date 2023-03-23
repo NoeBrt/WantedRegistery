@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class WantedPerson {
@@ -25,8 +27,29 @@ public class WantedPerson {
         }
     }
 
+    public WantedPerson(byte[] photo, String name, String subject) {
+        this.photo = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+        this.name = name;
+        this.subject = subject;
+    }
+
     public Bitmap getPhoto() {
         return photo;
+    }
+
+    public byte[] getPhotoByte() {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] b = stream.toByteArray();
+
+            stream.close();
+            return b;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void setPhoto(String photoURL) {
