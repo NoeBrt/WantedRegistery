@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,8 +32,6 @@ import java.util.List;
 
 public class WantedRecyclerActivity extends AppCompatActivity {
 
-    ImageView photoView;
-    TextView nameView;
     DBHandler db;
 
     @Override
@@ -136,7 +135,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
             if (true) {
                 JSONArray results = jso.getJSONArray("items");
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 20; i++) {
                     String name = results.getJSONObject(i).getString("title");
                     String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
                     String subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);

@@ -1,5 +1,6 @@
 package com.example.wantedregistery;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +31,15 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int
-            position) {
-        ((ViewHolderWanted)
-                holder).getImageViewPhoto().setImageBitmap(P.get(position).getPhoto());
-        ((ViewHolderWanted)
-                holder).getTextViewName().setText(P.get(position).getName());
-        ((ViewHolderWanted)
-                holder).getTextViewSubject().setText(P.get(position).getSubject());
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ImageView image = ((ViewHolderWanted) holder).getImageViewPhoto();
+        image.setImageBitmap(P.get(position).getPhoto());
+        if (P.get(position).getSubject().contains("Missing Persons")) {
+            image.setBackgroundColor(Color.argb(200, 29, 60, 155));
+        } else image.setBackgroundColor(Color.argb(255, 208, 4, 49));
+
+        ((ViewHolderWanted) holder).getTextViewName().setText(P.get(position).getName());
+        ((ViewHolderWanted) holder).getTextViewSubject().setText(P.get(position).getSubject());
     }
 
     @Override
