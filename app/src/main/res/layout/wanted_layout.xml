@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     tools:context=".WantedRecyclerActivity"
     android:id="@+id/wantedLayout"
-    android:layout_margin="8dp">
+    android:layout_margin="10dp"
+    android:onClick="displayDetails">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
         android:id="@+id/wantedName"
         android:layout_toRightOf="@id/wantedImage"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="80sp"
         android:fontFamily="sans-serif-black"
         android:textStyle="bold" />
 
@@ -31,7 +32,7 @@
         android:id="@+id/wantedSubject"
         android:layout_below="@id/wantedName"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="80sp"
         android:fontFamily="sans-serif-black" />
 
 </RelativeLayout>

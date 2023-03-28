@@ -5,13 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -42,6 +40,11 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
         requestTask.execute();
+    }
+
+    public void displayDetails(View view) {
+        Intent i = new Intent(this, WantedDetailsActivity.class);
+        startActivity(i);
     }
 
     @Deprecated
@@ -105,6 +108,8 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                     String subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
                     WantedPerson p = new WantedPerson(photoURL, name, subject);
                     response.add(p);
+
+                    db.insertWanted(p.getPhotoByte(), name, subject);
                 }
             }
 
