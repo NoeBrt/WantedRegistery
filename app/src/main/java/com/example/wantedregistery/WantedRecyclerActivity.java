@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WantedRecyclerActivity extends AppCompatActivity {
 
@@ -38,8 +42,38 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-        WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
-        requestTask.execute();
+        if (internetConnectionTest()) {
+            WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
+            requestTask.execute();
+        }
+
+        displayAll();
+    }
+
+    private boolean internetConnectionTest() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            boolean connected = (nInfo != null) && nInfo.isAvailable() && nInfo.isConnected();
+
+            return connected;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void displayAll() {
+        ArrayList<WantedPerson> P = db.selectAll();
+
+        if (P.size() > 0) {
+            WantedAdapter myAdapter;
+            RecyclerView recycler = (RecyclerView)
+                    findViewById(R.id.recyclerWanted);
+            recycler.setLayoutManager(new
+                    LinearLayoutManager(WantedRecyclerActivity.this));
+            myAdapter = new WantedAdapter(P);
+            recycler.setAdapter(myAdapter);
+        }
     }
 
     public void displayDetails(View view) {
@@ -108,8 +142,6 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                     String subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
                     WantedPerson p = new WantedPerson(photoURL, name, subject);
                     response.add(p);
-
-                    db.insertWanted(p.getPhotoByte(), name, subject);
                 }
             }
 
@@ -118,13 +150,10 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
-                WantedAdapter myAdapter;
-                RecyclerView recycler = (RecyclerView)
-                        findViewById(R.id.recyclerWanted);
-                recycler.setLayoutManager(new
-                        LinearLayoutManager(WantedRecyclerActivity.this));
-                myAdapter = new WantedAdapter(result);
-                recycler.setAdapter(myAdapter);
+                db.deleteForm("wanted");
+                for (WantedPerson p : result) {
+                    db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject());
+                }
             }
         }
     }

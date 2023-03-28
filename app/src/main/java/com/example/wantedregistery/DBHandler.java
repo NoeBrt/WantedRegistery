@@ -46,12 +46,12 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(DBContract.Form.TABLE_NAME, null, row);
     }
 
-    public List<WantedPerson> selectAll() {
+    public ArrayList<WantedPerson> selectAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
 
-        List<WantedPerson> responses = new ArrayList<>();
+        ArrayList<WantedPerson> responses = new ArrayList<>();
         while (cursor.moveToNext()) {
             @SuppressLint("Range") byte[] photo = cursor.getBlob(cursor.getColumnIndex(DBContract.Form.COLUMN_PHOTO));
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_NAME));
@@ -67,6 +67,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void deleteForm (String name) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DBContract.Form.TABLE_NAME, null, null);
     }
 
     public void deleteFormID (int id){
