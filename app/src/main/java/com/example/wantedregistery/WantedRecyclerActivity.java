@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ import java.util.List;
 public class WantedRecyclerActivity extends AppCompatActivity {
 
     DBHandler db;
+    int nbPages = (int) Double.POSITIVE_INFINITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,14 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         db = new DBHandler(this);
 
         if (internetConnectionTest()) {
-            WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
-            requestTask.execute();
-        }
-
-        displayAll();
+            db.deleteForm("wanted");
+            int page = 1;
+            while (page <= 1) {
+                WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
+                requestTask.execute(page);
+                page++;
+            }
+        } else displayAll();
     }
 
     private boolean internetConnectionTest() {
@@ -81,10 +86,13 @@ public class WantedRecyclerActivity extends AppCompatActivity {
     }
 
     @Deprecated
-    private class RequestTask extends AsyncTask<Void, Void, ArrayList<WantedPerson>> {
+    private class RequestTask extends AsyncTask<Integer, Void, ArrayList<WantedPerson>> {
+
+        int page;
 
         @Override
-        protected ArrayList<WantedPerson> doInBackground(Void... voids) {
+        protected ArrayList<WantedPerson> doInBackground(Integer... page) {
+            this.page = page[0];
             ArrayList<WantedPerson> response = new ArrayList<>();
             try {
                 //Exécution de la requête HTTP
@@ -106,7 +114,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             System.out.println("Testing request");
             try {
                 HttpURLConnection connection = null;
-                URL url = new URL("https://api.fbi.gov/wanted/v1");
+                URL url = new URL("https://api.fbi.gov/wanted/v1?page=" + page);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
@@ -131,9 +139,13 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             return response;
         }
 
-        private ArrayList<WantedPerson> decodeJSON(JSONObject jso) throws Exception {
+        private ArrayList<WantedPerson> decodeJSON(JSONObject jso) throws IndexOutOfBoundsException, JSONException {
             ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
             if (true) {
+                int items = jso.getInt("total");
+                if (items % 20 == 0) nbPages = items / 20;
+                else nbPages = (int) Math.ceil(items / 20);
+
                 JSONArray results = jso.getJSONArray("items");
                 for (int i = 0; i < 20; i++) {
                     String name = results.getJSONObject(i).getString("title");
@@ -149,11 +161,12 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
-                db.deleteForm("wanted");
                 for (WantedPerson p : result) {
                     db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject());
                 }
             }
+
+            displayAll();
         }
     }
 }
