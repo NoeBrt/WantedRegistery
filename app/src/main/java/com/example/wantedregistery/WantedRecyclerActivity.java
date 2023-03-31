@@ -11,10 +11,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +27,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 public class WantedRecyclerActivity extends AppCompatActivity {
 
     DBHandler db;
-    int nbPages = (int) Double.POSITIVE_INFINITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +42,10 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         if (internetConnectionTest()) {
             db.deleteForm("wanted");
-            int page = 1;
-            while (page <= 1) {
-                WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
-                requestTask.execute(page);
-                page++;
-            }
-        } else displayAll();
+
+            WantedRecyclerActivity.RequestTask requestTask = new WantedRecyclerActivity.RequestTask();
+            requestTask.execute();
+        } else display(25);
     }
 
     private boolean internetConnectionTest() {
@@ -66,8 +60,8 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         }
     }
 
-    public void displayAll() {
-        ArrayList<WantedPerson> P = db.selectAll();
+    public void display(int limit) {
+        ArrayList<WantedPerson> P = db.select(limit);
 
         if (P.size() > 0) {
             WantedAdapter myAdapter;
@@ -85,22 +79,31 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    @Deprecated
-    private class RequestTask extends AsyncTask<Integer, Void, ArrayList<WantedPerson>> {
+    public void editContact(View view) {
+        Intent i = new Intent(this, ContactActivity.class);
+        startActivity(i);
+    }
 
-        int page;
+    @Deprecated
+    private class RequestTask extends AsyncTask<Void, Void, ArrayList<WantedPerson>> {
 
         @Override
-        protected ArrayList<WantedPerson> doInBackground(Integer... page) {
-            this.page = page[0];
+        protected ArrayList<WantedPerson> doInBackground(Void... voids) {
             ArrayList<WantedPerson> response = new ArrayList<>();
             try {
-                //Exécution de la requête HTTP
-                String totalLine = requete();
-                //Récupération des données
-                JSONObject toDecode = new JSONObject(totalLine);
-                //Décode l'objet JSON et récupère le ArrayList
-                response = decodeJSON(toDecode);
+                //Recherche du nombre de pages
+                String totalLine1 = requete(1);
+                JSONObject toDecode1 = new JSONObject(totalLine1);
+                int nbPages = decodeNbPages(toDecode1);
+
+                for (int page = 1; page <= nbPages; page++) {
+                    //Exécution de la requête HTTP
+                    String totalLine2 = requete(page);
+                    //Récupération des données
+                    JSONObject toDecode2 = new JSONObject(totalLine2);
+                    //Décode l'objet JSON et récupère le ArrayList
+                    response.addAll(decodeJSON(toDecode2));
+                }
             } catch (Exception e) {
                 //Gestion des erreurs
                 e.printStackTrace();
@@ -109,7 +112,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             return response;
         }
 
-        private String requete() {
+        private String requete(int page) {
             String response = "";
             System.out.println("Testing request");
             try {
@@ -142,18 +145,32 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         private ArrayList<WantedPerson> decodeJSON(JSONObject jso) throws IndexOutOfBoundsException, JSONException {
             ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
             if (true) {
-                int items = jso.getInt("total");
-                if (items % 20 == 0) nbPages = items / 20;
-                else nbPages = (int) Math.ceil(items / 20);
-
                 JSONArray results = jso.getJSONArray("items");
                 for (int i = 0; i < 20; i++) {
                     String name = results.getJSONObject(i).getString("title");
                     String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
-                    String subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
+                    String subject = "Unknown";
+                    try {
+                        subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
+                    } catch (JSONException e) {
+                        System.err.println(e.getMessage());
+                    }
+
                     WantedPerson p = new WantedPerson(photoURL, name, subject);
                     response.add(p);
+                    System.out.println(p.getName());
                 }
+            }
+
+            return response;
+        }
+
+        private int decodeNbPages(JSONObject jso) throws IndexOutOfBoundsException, JSONException {
+            int response;
+            if (true) {
+                int items = jso.getInt("total");
+                if (items % 20 == 0) response = items / 20;
+                else response = (int) Math.ceil(items / 20);
             }
 
             return response;
@@ -166,7 +183,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                 }
             }
 
-            displayAll();
+            display(25);
         }
     }
 }

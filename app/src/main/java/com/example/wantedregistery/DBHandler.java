@@ -46,9 +46,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(DBContract.Form.TABLE_NAME, null, row);
     }
 
-    public ArrayList<WantedPerson> selectAll() {
+    public ArrayList<WantedPerson> select(int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME;
+        if (limit > 0) query = query + " LIMIT " + limit;
         Cursor cursor = db.rawQuery(query, null);
 
         ArrayList<WantedPerson> responses = new ArrayList<>();
