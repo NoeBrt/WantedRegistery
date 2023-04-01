@@ -39,7 +39,8 @@
                 android:fontFamily="sans-serif-black"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:onClick="editContact" />
+                android:onClick="editContact"
+                tools:ignore="OnClick" />
         </RelativeLayout>
     </android.widget.Toolbar>
 </RelativeLayout>

@@ -42,6 +42,7 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         ((ViewHolderWanted) holder).getTextViewName().setText(P.get(position).getName());
         ((ViewHolderWanted) holder).getTextViewSubject().setText(P.get(position).getSubject());
+        ((ViewHolderWanted) holder).getUid().setText(P.get(position).getUid());
     }
 
     @Override
@@ -54,12 +55,15 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private final ImageView photo;
         private final TextView name;
         private final TextView subject;
+        private final TextView uid;
+
 
         public ViewHolderWanted(View view) {
             super(view);
             photo = view.findViewById(R.id.wantedImage);
             name = view.findViewById(R.id.wantedName);
             subject = view.findViewById(R.id.wantedSubject);
+            uid = view.findViewById(R.id.uid);
         }
 
         public ImageView getImageViewPhoto() { return photo; }
@@ -70,6 +74,10 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public TextView getTextViewSubject() {
             return subject;
+        }
+
+        public TextView getUid() {
+            return uid;
         }
     }
 }

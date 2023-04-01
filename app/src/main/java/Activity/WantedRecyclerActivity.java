@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import BitmapProcess.BitmapProcess;
 import DAO.DBHandler;
 import com.example.wantedregistery.R;
 import Adapter.WantedAdapter;
@@ -28,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,7 +52,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-        if (internetConnectionTest()) {
+       if (internetConnectionTest()) {
             db.deleteForm("wanted");
 
             IWantedPersonRepository wantedPersonRepository = new WantedPersonRepository();
@@ -56,6 +60,13 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             requestTask.execute();
 
         } else display(25);
+    }
+    private void test(){
+        String s="https://www.fbi.gov/wanted/vicap/missing-persons/jesus-de-la-cruz---lynn-massachusetts/@@images/image/thumb";
+        byte[] b = new byte[10];
+        db.insertWanted(b,"TESTTSA","murder","b166d627e11149aa82c02d1533e3b650");
+        db.insertWanted(b,"TESTTSA2","murder2","b166d627e11149aa82c02d1533e3b6502");
+
     }
 
     private boolean internetConnectionTest() {
@@ -71,8 +82,9 @@ public class WantedRecyclerActivity extends AppCompatActivity {
     }
 
     public void display(int limit) {
+        test();
         ArrayList<WantedPerson> P = db.select(limit);
-
+        System.out.println(P);
         if (P.size() > 0) {
             WantedAdapter myAdapter;
             RecyclerView recycler = (RecyclerView)
@@ -86,7 +98,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
     public void displayDetails(View view) {
         Intent i = new Intent(this, WantedDetailsActivity.class);
-        i.putExtra("Title", ((TextView) view.findViewById(R.id.wantedName)).getText().toString() );
+        i.putExtra("uid", ((TextView) view.findViewById(R.id.uid)).getText().toString());
         startActivity(i);
     }
 
@@ -114,11 +126,11 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
                 for (WantedPerson p : result) {
-                    db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject());
+                    db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject(),p.getUid());
                 }
             }
-            System.out.println("result: " + result.size());
             display(25);
+            System.out.println("FINISH");
         }
     }
 }

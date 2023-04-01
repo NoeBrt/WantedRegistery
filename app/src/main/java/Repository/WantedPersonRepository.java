@@ -19,7 +19,7 @@ import JsonParser.JsonWantedListParser;
 import Model.WantedPerson;
 import Model.WantedPersonDetailed;
 
-public class WantedPersonRepository implements IWantedPersonRepository{
+public class WantedPersonRepository implements IWantedPersonRepository {
     @Override
     public ArrayList<WantedPerson> findWanted() {
         JsonWantedListParser parser = new JsonWantedListParser();
@@ -41,68 +41,64 @@ public class WantedPersonRepository implements IWantedPersonRepository{
             }
         } catch (Exception e) {
             //Gestion des erreurs
+            return new ArrayList<WantedPerson>();
+        }
+        return response;
+
+    }
+
+
+    @Override
+    public WantedPersonDetailed findWanted(String uid) {
+        JsonWantedDetailParser parser = new JsonWantedDetailParser();
+        try {
+            JSONObject toDecode = new JSONObject(requestDetail(uid));
+            return (WantedPersonDetailed) parser.parseJSON(toDecode);
+        } catch (Exception e) {
+            //Gestion des erreurs
+            return null;
+        }
+    }
+
+
+    private String requestPage(int page) {
+        return request("https://api.fbi.gov/wanted/v1?page=\"" + page+"\"");
+    }
+
+    private String requestDetail(String uid) {
+        return request("https://api.fbi.gov/@wanted-person/" + uid+"/");
+    }
+
+    private String request(String request) {
+        System.out.println(request);
+        String response = "";
+        System.out.println("Testing request");
+        try {
+            HttpURLConnection connection = null;
+            URL url = new URL(request);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            InputStream inputStream = connection.getInputStream();
+            InputStreamReader inputStreamReader = new
+                    InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String ligne = bufferedReader.readLine();
+            while (ligne != null) {
+                response += ligne;
+                ligne = bufferedReader.readLine();
+            }
+        } catch (UnsupportedEncodingException e) {
+            response = "Problème d'encodage !";
+        } catch (MalformedURLException e) {
+            response = "Problème d'URL !";
+        } catch (IOException e) {
+            response = "Problème de connexion !";
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return response;
     }
-
-
-    @Override
-    public WantedPersonDetailed findWanted(String name) {
-        JsonWantedDetailParser parser = new JsonWantedDetailParser();
-        return null;
-    }
-
-
-    private String requestPage(int page)  {
-     return request("https://api.fbi.gov/wanted/v1?page=" + page);
-    }
-
-    private String requestDetail(String title){
-        return request("https://api.fbi.gov/wanted/v1?title="+ title);
-    }
-    private String request(String request) {
-        int retryCount = 0;
-        int maxRetries = 5;
-        long waitTime = 1000; // Initial wait time in milliseconds
-
-        while (retryCount < maxRetries) {
-            try {
-                HttpURLConnection connection;
-                URL url = new URL(request);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                int responseCode = connection.getResponseCode();
-                System.out.println("Response Code: " + responseCode);
-
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = connection.getInputStream();
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String response = "";
-                    String line;
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        response += line;
-                    }
-
-                    return response;
-                } else if (responseCode == 429) {
-                    return "429";
-                } else {
-                    throw new IOException("Request failed with HTTP error code: " + responseCode);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return "";
-    }
-
-
 
 
     private int decodeNbPages(JSONObject jso) throws IndexOutOfBoundsException, JSONException {
@@ -112,8 +108,6 @@ public class WantedPersonRepository implements IWantedPersonRepository{
         else response = (int) Math.ceil(items / 20);
         return response;
     }
-
-
 
 
 }

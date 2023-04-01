@@ -8,5 +8,6 @@ public final class DBContract {
         public static final String COLUMN_PHOTO = "photo";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_SUBJECT = "subject";
+        public static final String COLUMN_UID = "uid" ;
     }
 }

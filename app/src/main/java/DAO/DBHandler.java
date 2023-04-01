@@ -20,15 +20,30 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =  "CREATE TABLE " + DBContract.Form.TABLE_NAME + " (" +
                 DBContract.Form._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DBContract.Form.COLUMN_PHOTO + " BLOB," +
                 DBContract.Form.COLUMN_NAME + " TEXT," +
-                DBContract.Form.COLUMN_SUBJECT + " TEXT)";
+                DBContract.Form.COLUMN_SUBJECT + " TEXT,"+
+                DBContract.Form.COLUMN_UID + " TEXT)";
+
         db.execSQL(query);
     }
+
+    public void insertWanted(byte[] photo, String name, String subject,String uid){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues row = new ContentValues();
+
+        row.put(DBContract.Form.COLUMN_PHOTO, photo);
+        row.put(DBContract.Form.COLUMN_NAME, name);
+        row.put(DBContract.Form.COLUMN_SUBJECT, subject);
+        row.put(DBContract.Form.COLUMN_UID, uid);
+        db.insert(DBContract.Form.TABLE_NAME, null, row);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String query = "DROP TABLE IF EXISTS " + DBContract.Form.TABLE_NAME;
@@ -36,15 +51,7 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertWanted(byte[] photo, String name, String subject){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues row = new ContentValues();
 
-        row.put(DBContract.Form.COLUMN_PHOTO, photo);
-        row.put(DBContract.Form.COLUMN_NAME, name);
-        row.put(DBContract.Form.COLUMN_SUBJECT, subject);
-        db.insert(DBContract.Form.TABLE_NAME, null, row);
-    }
 
     public ArrayList<WantedPerson> select(int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -57,8 +64,8 @@ public class DBHandler extends SQLiteOpenHelper {
             @SuppressLint("Range") byte[] photo = cursor.getBlob(cursor.getColumnIndex(DBContract.Form.COLUMN_PHOTO));
             @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_NAME));
             @SuppressLint("Range") String subject = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_SUBJECT));
-            //@SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(DBContract.Form._ID));
-            WantedPerson response = new WantedPerson(photo, name, subject);
+            @SuppressLint("Range") String uid = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_UID));
+            WantedPerson response = new WantedPerson(photo, name, subject,uid);
             responses.add(response);
         }
 

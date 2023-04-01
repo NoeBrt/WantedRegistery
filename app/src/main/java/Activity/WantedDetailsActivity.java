@@ -2,6 +2,8 @@ package Activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +13,9 @@ import com.example.wantedregistery.R;
 import JsonParser.JsonWantedDetailParser;
 import JsonParser.JsonWantedListParser;
 import Model.WantedPerson;
+import Model.WantedPersonDetailed;
 import Repository.IWantedPersonRepository;
+import Repository.WantedPersonRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,15 +32,30 @@ import java.util.ArrayList;
 
 public class WantedDetailsActivity extends AppCompatActivity {
 
-String Title;
+String uid;
+ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wanted_details);
-        Title=getIntent().getStringExtra("Title");
+        uid=getIntent().getStringExtra("uid");
+        imageView=findViewById(R.id.imageView2);
+        IWantedPersonRepository wantedPersonRepository = new WantedPersonRepository();
+        RequestTask requestTask = new RequestTask(wantedPersonRepository);
+        requestTask.execute();
+    }
+    private void display(WantedPersonDetailed result) {
+        System.out.println(result);
     }
 
-    private class RequestTask extends AsyncTask<Void, Void, WantedPerson> {
+    public void switchImage(){
+
+
+    }
+
+
+
+    private class RequestTask extends AsyncTask<Void, Void, WantedPersonDetailed> {
 
         private final IWantedPersonRepository wantedPersonRepository;
 
@@ -45,18 +64,21 @@ String Title;
         }
 
         @Override
-        protected WantedPerson doInBackground(Void... voids) {
-            return wantedPersonRepository.findWanted(Title);
+        protected WantedPersonDetailed doInBackground(Void... voids) {
+            return wantedPersonRepository.findWanted(uid);
 
         }
 
 
 
-        protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
+        protected void onPostExecute(@NonNull WantedPersonDetailed result) {
 
-            //display(result);
+
+            display(result);
         }
     }
+
+
 
 
 }

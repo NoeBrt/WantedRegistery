@@ -18,9 +18,9 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
             String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
             String subject = "Unknown";
             subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
+            String uid = results.getJSONObject(i).getString("uid");
 
-
-            WantedPerson p = new WantedPerson(photoURL, name, subject);
+            WantedPerson p = new WantedPerson(photoURL, name, subject,uid);
             response.add(p);
             System.out.println(p.getName());
         }

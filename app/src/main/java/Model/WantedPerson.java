@@ -9,32 +9,35 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import BitmapProcess.BitmapProcess;
+
 public class WantedPerson {
 
     private Bitmap photo;
     private String name;
     private String subject;
+    private String uid;
 
 
 
-    public WantedPerson(String photoURL, String name, String subject) {
+
+    public WantedPerson(String photoURL, String name, String subject, String uid) {
         this.name = name;
         this.subject = subject;
+        this.uid = uid;
+        photo= (new BitmapProcess()).fromURLtoBitmap(photoURL);
+        System.out.println("photoURL: "+photoURL);
 
-        try {
-            InputStream in = new java.net.URL(photoURL).openStream();
-            photo = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public WantedPerson(byte[] photo, String name, String subject) {
+    public WantedPerson(byte[] photo, String name, String subject, String uid) {
         this.photo = BitmapFactory.decodeByteArray(photo, 0, photo.length);
         this.name = name;
         this.subject = subject;
+        this.uid = uid;
     }
-
+    public WantedPerson() {
+    }
     public Bitmap getPhoto() {
         return photo;
     }
@@ -55,12 +58,7 @@ public class WantedPerson {
     }
 
     public void setPhoto(String photoURL) {
-        try {
-            InputStream in = new java.net.URL(photoURL).openStream();
-            photo = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       photo= (new BitmapProcess()).fromURLtoBitmap(photoURL);
     }
 
     public String getName() {
@@ -77,5 +75,17 @@ public class WantedPerson {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
