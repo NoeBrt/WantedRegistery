@@ -31,7 +31,7 @@ public class WantedPersonRepository implements IWantedPersonRepository {
             JSONObject toDecode1 = new JSONObject(totalLine1);
             int nbPages = decodeNbPages(toDecode1);
 
-            for (int page = 1; page <= nbPages; page++) {
+            for (int page = 1; page <= 2; page++) {
                 //Exécution de la requête HTTP
                 String totalLine2 = requestPage(page);
                 //Récupération des données
@@ -56,6 +56,7 @@ public class WantedPersonRepository implements IWantedPersonRepository {
             return (WantedPersonDetailed) parser.parseJSON(toDecode);
         } catch (Exception e) {
             //Gestion des erreurs
+            e.printStackTrace();
             return null;
         }
     }

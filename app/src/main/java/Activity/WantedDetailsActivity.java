@@ -1,9 +1,15 @@
 package Activity;
 
+import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +22,7 @@ import Model.WantedPerson;
 import Model.WantedPersonDetailed;
 import Repository.IWantedPersonRepository;
 import Repository.WantedPersonRepository;
+import Utils.ViewUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +36,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class WantedDetailsActivity extends AppCompatActivity {
 
@@ -44,9 +54,24 @@ ImageView imageView;
         RequestTask requestTask = new RequestTask(wantedPersonRepository);
         requestTask.execute();
     }
-    private void display(WantedPersonDetailed result) {
-        System.out.println(result);
+    @SuppressLint("ResourceType")
+    private void display(WantedPersonDetailed person) {
+        LinkedHashMap<String,String> content = person.getAdditionalContent();
+        LinkedHashMap<String,String> tableContent = person.getDescriptionContent();
+        int index=0;
+        ViewUtils.addTitleAndContent((LinearLayout) getResources().getLayout(R.id.linearLayout),"Aliases",content.get("Aliases"), index, 20);
+        for (Map.Entry<String, String> entry : tableContent.entrySet()) {
+            ViewUtils.addRow(entry.getKey(),entry.getValue(),(TableLayout) getResources().getLayout(R.id.tableLayout),this,5);
+        }
+        for (Map.Entry<String, String> entry : content.entrySet()) {
+            if(!entry.getKey().equals("Aliases")){
+                ViewUtils.addTitleAndContent((LinearLayout) getResources().getLayout(R.id.linearLayout),entry.getKey(),entry.getValue(), index, 20);
+            }
+        }
     }
+
+
+
 
     public void switchImage(){
 
@@ -72,8 +97,6 @@ ImageView imageView;
 
 
         protected void onPostExecute(@NonNull WantedPersonDetailed result) {
-
-
             display(result);
         }
     }

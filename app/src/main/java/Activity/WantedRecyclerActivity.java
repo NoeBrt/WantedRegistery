@@ -125,6 +125,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
+                System.out.println(result);
                 for (WantedPerson p : result) {
                     db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject(),p.getUid());
                 }

@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="Activity.WantedDetailsActivity">
+    tools:context="Activity.WantedDetailsActivity"
+    android:id="@+id/linearLayout"
+    >
 
     <ImageView
         android:layout_margin="2pt"
@@ -32,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="0"
+        android:id="@+id/tableLayout"
         >
         <TableRow android:layout_margin="5pt">
             <TextView
@@ -93,7 +96,9 @@
     <TextView
         android:id="@+id/Remark"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -6,6 +6,8 @@ import android.media.Image;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class WantedPersonDetailed extends WantedPerson {
 
@@ -224,4 +226,29 @@ public class WantedPersonDetailed extends WantedPerson {
     public void setImages(ArrayList<Bitmap> images) {
         this.images = images;
     }
+    public LinkedHashMap<String,String> getDescriptionContent(){
+        LinkedHashMap<String,String> content = new LinkedHashMap<String,String>();
+        content.put("Date of Birth",dateOfBirthUsed);
+        content.put("Age",age);
+        content.put("Hair",hair);
+        content.put("Eyes",eyes);
+        content.put("Height",height);
+        content.put("Sex", sex);
+        content.put("Race", race);
+        content.put("Nationality", nationality);
+        content.put("Scars and Marks", scarsAndMarks);
+        content.put("NCIC", ncic);
+        return content;
+    }
+
+    public LinkedHashMap<String,String> getAdditionalContent(){
+        LinkedHashMap<String,String> content = new LinkedHashMap<String,String>();
+        String aliasesText= String.join(",", aliases);
+        content.put("Aliases", aliasesText);
+        content.put("Reward", reward);
+        content.put("Remarks", remarks);
+        content.put("Caution", caution);
+        return content;
+    }
+
 }
