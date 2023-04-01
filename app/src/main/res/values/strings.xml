@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">WantedRegistery</string>
+    <string name="Title">\"TITLE\"</string>
+    <string name="Age">Age</string>
+    <string name="Hair">Hair</string>
+    <string name="Eyes">Eyes</string>
+    <string name="Weight">Weight</string>
+    <string name="Height">Height</string>
+
+    <string name="Sex">Sex</string>
+    <string name="Race">Race</string>
+    <string name="Remark">Remark</string>
+    <string name="Details">Details</string>
+    <string name="DownloadPoster">Details</string>
+
+
 </resources>

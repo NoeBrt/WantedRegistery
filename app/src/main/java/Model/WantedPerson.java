@@ -1,4 +1,4 @@
-package com.example.wantedregistery;
+package Model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +14,8 @@ public class WantedPerson {
     private Bitmap photo;
     private String name;
     private String subject;
+
+
 
     public WantedPerson(String photoURL, String name, String subject) {
         this.name = name;

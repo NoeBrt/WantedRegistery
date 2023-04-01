@@ -1,4 +1,4 @@
-package com.example.wantedregistery;
+package DAO;
 
 public final class DBContract {
 

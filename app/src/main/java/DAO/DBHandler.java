@@ -1,4 +1,4 @@
-package com.example.wantedregistery;
+package DAO;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -6,10 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
+
+import Model.WantedPerson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
     //change version when upgraded

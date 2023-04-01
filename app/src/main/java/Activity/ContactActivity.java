@@ -1,8 +1,10 @@
-package com.example.wantedregistery;
+package Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.wantedregistery.R;
 
 public class ContactActivity extends AppCompatActivity {
 
