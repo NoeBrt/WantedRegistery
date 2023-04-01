@@ -86,7 +86,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
     public void displayDetails(View view) {
         Intent i = new Intent(this, WantedDetailsActivity.class);
-        i.putExtra("WantedName", ((TextView) view.findViewById(R.id.wantedName)).getText().toString() );
+        i.putExtra("Title", ((TextView) view.findViewById(R.id.wantedName)).getText().toString() );
         startActivity(i);
     }
 
@@ -105,7 +105,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<WantedPerson> doInBackground(Void... voids) {
-            return wantedPersonRepository.getAllWantedPersons(new JsonWantedListParser());
+            return wantedPersonRepository.findWanted();
 
         }
 
@@ -117,7 +117,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                     db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject());
                 }
             }
-
+            System.out.println("result: " + result.size());
             display(25);
         }
     }
