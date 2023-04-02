@@ -27,24 +27,12 @@ public class WantedPersonRepository implements IWantedPersonRepository {
         try {
             //Recherche du nombre de pages
             String totalLine1 = requestPage(1);
-            System.out.println(totalLine1);
             JSONObject toDecode1 = new JSONObject(totalLine1);
-            int nbPages = decodeNbPages(toDecode1);
-
-            for (int page = 1; page <= 2; page++) {
-                //Exécution de la requête HTTP
-                String totalLine2 = requestPage(page);
-                //Récupération des données
-                JSONObject toDecode2 = new JSONObject(totalLine2);
-                //Décode l'objet JSON et récupère le ArrayList
-                response.addAll(parser.parseJSON(toDecode2));
-            }
+            return parser.parseJSON(toDecode1);
         } catch (Exception e) {
             //Gestion des erreurs
             return new ArrayList<WantedPerson>();
         }
-        return response;
-
     }
 
 
@@ -63,7 +51,7 @@ public class WantedPersonRepository implements IWantedPersonRepository {
 
 
     private String requestPage(int page) {
-        return request("https://api.fbi.gov/wanted/v1?page=\"" + page+"\"");
+        return request("https://api.fbi.gov/@wanted?page="+"'"+page+"'");
     }
 
     private String requestDetail(String uid) {

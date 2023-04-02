@@ -61,13 +61,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         } else display(25);
     }
-    private void test(){
-        String s="https://www.fbi.gov/wanted/vicap/missing-persons/jesus-de-la-cruz---lynn-massachusetts/@@images/image/thumb";
-        byte[] b = new byte[10];
-        db.insertWanted(b,"TESTTSA","murder","b166d627e11149aa82c02d1533e3b650");
-        db.insertWanted(b,"TESTTSA2","murder2","b166d627e11149aa82c02d1533e3b6502");
 
-    }
 
     private boolean internetConnectionTest() {
         try {
@@ -82,7 +76,6 @@ public class WantedRecyclerActivity extends AppCompatActivity {
     }
 
     public void display(int limit) {
-        test();
         ArrayList<WantedPerson> P = db.select(limit);
         System.out.println(P);
         if (P.size() > 0) {

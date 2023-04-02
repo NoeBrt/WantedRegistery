@@ -27,10 +27,10 @@
         </activity>
         <activity
             android:name="Activity.WantedDetailsActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name="Activity.ContactActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

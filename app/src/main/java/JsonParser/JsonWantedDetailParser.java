@@ -2,6 +2,7 @@ package JsonParser;
 
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.text.Html;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,23 +21,30 @@ public class JsonWantedDetailParser implements IJsonParserStrategy<WantedPerson>
         System.out.println("JSON "+jso);
         ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
         WantedPersonDetailed p = new WantedPersonDetailed();
-        ArrayList<String> aliases=parseArray(jso.getJSONArray("aliases"));
+        ArrayList<String> aliases=new ArrayList<>();
+        if (jso.getString("aliases")!="null"){
+            aliases = parseArray(jso.getJSONArray("aliases"));
+        }else{
+            aliases.add("null");
+        }
         ArrayList<String> images=parseArray(jso.getJSONArray("images"),"original");
         ArrayList<Bitmap> imagesBitmap=new ArrayList<Bitmap>();
+        ArrayList<String> subjects =parseArray(jso.getJSONArray("subjects"));
         images.forEach((image)->{
             imagesBitmap.add( (new BitmapProcess()).fromURLtoBitmap(image));
         });
+        p.setSubject(String.join(",",subjects));
         p.setImages(imagesBitmap);
         p.setUid(jso.getString("uid"));
         p.setAliases(aliases);
         p.setPhoto((new BitmapProcess()).fromURLtoBitmap(jso.getJSONArray("images").getJSONObject(0).getString("original")));
-        p.setCaution(jso.getString("caution"));
+        p.setCaution(String.valueOf(Html.fromHtml(jso.getString("caution"))));
         p.setRemarks(jso.getString("remarks"));
-        p.setReward(jso.getString("reward"));
+        p.setReward(jso.getString("reward_text"));
         p.setNcic(jso.getString("ncic"));
         p.setScarsAndMarks(jso.getString("scars_and_marks"));
         p.setRace(jso.getString("race_raw"));
-        p.setDateOfBirthUsed(jso.getString("date_of_birth"));
+        p.setDateOfBirthUsed(jso.getString("dates_of_birth_used"));
         p.setAge(jso.getString("age_range"));
         p.setHair(jso.getString("hair"));
         p.setEyes(jso.getString("eyes"));
@@ -45,7 +53,7 @@ public class JsonWantedDetailParser implements IJsonParserStrategy<WantedPerson>
         p.setSex(jso.getString("sex"));
         p.setNationality(jso.getString("nationality"));
         p.setName(jso.getString("title"));
-        p.setSubject(jso.getString("subject"));
+
         return p;
     }
 
