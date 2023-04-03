@@ -105,11 +105,11 @@ WantedPersonDetailed person;
     private void addImage(Bitmap photo){
         ImageView img = new ImageView(this);
         img.setImageBitmap(photo);
-        int marginInPixels = (int) TypedValue.applyDimension(
+      /*  int marginInPixels = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_PT, 4, getResources().getDisplayMetrics());
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) img.getLayoutParams();
-        layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);
-        img.setLayoutParams(layoutParams);
+        layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);*/
+      //  img.setLayoutParams(layoutParams);
 
         imageLayout.addView(img);
     }
