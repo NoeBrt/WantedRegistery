@@ -13,11 +13,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import JsonParser.IJsonParserStrategy;
 import JsonParser.JsonWantedDetailParser;
 import JsonParser.JsonWantedListParser;
 import Model.WantedPerson;
-import Model.WantedPersonDetailed;
 
 public class WantedPersonRepository implements IWantedPersonRepository {
     @Override
@@ -28,20 +26,30 @@ public class WantedPersonRepository implements IWantedPersonRepository {
             //Recherche du nombre de pages
             String totalLine1 = requestPage(1);
             JSONObject toDecode1 = new JSONObject(totalLine1);
-            return parser.parseJSON(toDecode1);
+            int nbPages = decodeNbPages(toDecode1);
+
+            for (int page = 1; page <= nbPages; page++) {
+                //Exécution de la requête HTTP
+                String totalLine2 = requestPage(page);
+                //Récupération des données
+                JSONObject toDecode2 = new JSONObject(totalLine2);
+                //Décode l'objet JSON et récupère le ArrayList
+                response.addAll(parser.parseJSON(toDecode2));
+            }
         } catch (Exception e) {
             //Gestion des erreurs
-            return new ArrayList<WantedPerson>();
+            e.printStackTrace();
         }
+
+        return response;
     }
 
-
     @Override
-    public WantedPersonDetailed findWanted(String uid) {
+    public WantedPerson findWanted(String uid) {
         JsonWantedDetailParser parser = new JsonWantedDetailParser();
         try {
             JSONObject toDecode = new JSONObject(requestDetail(uid));
-            return (WantedPersonDetailed) parser.parseJSON(toDecode);
+            return parser.parseJSON(toDecode);
         } catch (Exception e) {
             //Gestion des erreurs
             e.printStackTrace();
@@ -49,13 +57,12 @@ public class WantedPersonRepository implements IWantedPersonRepository {
         }
     }
 
-
     private String requestPage(int page) {
-        return request("https://api.fbi.gov/@wanted?page="+"'"+page+"'");
+        return request("https://api.fbi.gov/@wanted?pageSize=50&page=" + page);
     }
 
     private String requestDetail(String uid) {
-        return request("https://api.fbi.gov/@wanted-person/" + uid+"/");
+        return request("https://api.fbi.gov/@wanted-person/" + uid);
     }
 
     private String request(String request) {
@@ -89,14 +96,11 @@ public class WantedPersonRepository implements IWantedPersonRepository {
         return response;
     }
 
-
     private int decodeNbPages(JSONObject jso) throws IndexOutOfBoundsException, JSONException {
         int response;
         int items = jso.getInt("total");
-        if (items % 20 == 0) response = items / 20;
-        else response = (int) Math.ceil(items / 20);
+        if (items % 50 == 0) response = items / 50;
+        else response = (int) Math.ceil(items / 50) + 1;
         return response;
     }
-
-
 }

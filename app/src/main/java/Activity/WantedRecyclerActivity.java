@@ -52,14 +52,14 @@ public class WantedRecyclerActivity extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-       if (internetConnectionTest()) {
-            db.deleteForm("wanted");
+        if (internetConnectionTest()) {
+            //db.deleteForm();
 
             IWantedPersonRepository wantedPersonRepository = new WantedPersonRepository();
             RequestTask requestTask = new RequestTask(wantedPersonRepository);
             requestTask.execute();
 
-        } else display(25);
+        } else display(20);
     }
 
 
@@ -111,18 +111,16 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         @Override
         protected ArrayList<WantedPerson> doInBackground(Void... voids) {
             return wantedPersonRepository.findWanted();
-
         }
-
-
 
         protected void onPostExecute(@NonNull ArrayList<WantedPerson> result) {
             if (result.size() > 1) {
                 System.out.println(result);
                 for (WantedPerson p : result) {
-                    db.insertWanted(p.getPhotoByte(), p.getName(), p.getSubject(),p.getUid());
+                    db.insertWanted(p.getPhotoByte(), p.getImagesBitmap(), p.getName(), p.getSubject(),p.getUid(), p.getWeight(), p.getDateOfBirthUsed(), p.getAge(), p.getHair(), p.getEyes(), p.getHeight(), p.getSex(), p.getRace(), p.getNationality(), p.getScarsAndMarks(), p.getNcic(), p.getReward(), p.getAliases(), p.getRemarks(), p.getCaution(), getContentResolver());
                 }
             }
+
             display(25);
             System.out.println("FINISH");
         }

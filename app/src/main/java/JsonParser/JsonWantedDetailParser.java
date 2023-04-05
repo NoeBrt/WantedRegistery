@@ -1,7 +1,6 @@
 package JsonParser;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.text.Html;
 
 import org.json.JSONArray;
@@ -12,31 +11,32 @@ import java.util.ArrayList;
 
 import BitmapProcess.BitmapProcess;
 import Model.WantedPerson;
-import Model.WantedPersonDetailed;
 
 public class JsonWantedDetailParser implements IJsonParserStrategy<WantedPerson> {
 
     @Override
     public WantedPerson parseJSON(JSONObject jso) throws JSONException {
-        System.out.println("JSON "+jso);
+        System.out.println("JSON " + jso);
         ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
-        WantedPersonDetailed p = new WantedPersonDetailed();
-        ArrayList<String> aliases=new ArrayList<>();
-        if (jso.getString("aliases")!="null"){
+        WantedPerson p = new WantedPerson();
+        ArrayList<String> aliases = new ArrayList<>();
+        if (jso.getString("aliases") != "null") {
             aliases = parseArray(jso.getJSONArray("aliases"));
-        }else{
+        } else {
             aliases.add("null");
         }
-        ArrayList<String> images=parseArray(jso.getJSONArray("images"),"original");
-        ArrayList<Bitmap> imagesBitmap=new ArrayList<Bitmap>();
-        ArrayList<String> subjects =parseArray(jso.getJSONArray("subjects"));
-        images.forEach((image)->{
+
+        ArrayList<String> images = parseArray(jso.getJSONArray("images"),"original");
+        ArrayList<Bitmap> imagesBitmap = new ArrayList<Bitmap>();
+        ArrayList<String> subjects = parseArray(jso.getJSONArray("subjects"));
+        images.forEach((image) -> {
             imagesBitmap.add( (new BitmapProcess()).fromURLtoBitmap(image));
         });
+
         p.setSubject(String.join(",",subjects));
-        p.setImages(imagesBitmap);
+        //p.setImages(imagesBitmap);
         p.setUid(jso.getString("uid"));
-        p.setAliases(aliases);
+        p.setAliases(aliases.get(0));
         p.setPhoto((new BitmapProcess()).fromURLtoBitmap(jso.getJSONArray("images").getJSONObject(0).getString("original")));
         p.setCaution(String.valueOf(Html.fromHtml(jso.getString("caution"))));
         p.setRemarks(jso.getString("remarks"));
@@ -65,12 +65,12 @@ public class JsonWantedDetailParser implements IJsonParserStrategy<WantedPerson>
         return response;
     }
 
-    private ArrayList<String> parseArray(JSONArray arrayJson,String key) throws JSONException {
+    private ArrayList<String> parseArray(JSONArray arrayJson, String key) throws JSONException {
         ArrayList<String> response = new ArrayList<String>();
         for (int i = 0; i < arrayJson.length(); i++) {
             response.add(arrayJson.getJSONObject(i).getString(key));
         }
+
         return response;
     }
-
 }
