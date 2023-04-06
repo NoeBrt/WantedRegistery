@@ -53,7 +53,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         db = new DBHandler(this);
 
         if (internetConnectionTest()) {
-            //db.deleteForm();
+            db.deleteForm();
 
             IWantedPersonRepository wantedPersonRepository = new WantedPersonRepository();
             RequestTask requestTask = new RequestTask(wantedPersonRepository);

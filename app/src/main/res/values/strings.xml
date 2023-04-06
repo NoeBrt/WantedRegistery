@@ -12,6 +12,8 @@
     <string name="Remark">Remark</string>
     <string name="Details">Details</string>
     <string name="DownloadPoster">Details</string>
+    <string name="nameTextView">"Contact informations : "</string>
+    <string name="confirmButton">Confirm</string>
 
 
 </resources>

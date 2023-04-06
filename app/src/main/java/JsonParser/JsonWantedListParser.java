@@ -17,12 +17,10 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
     public ArrayList<WantedPerson> parseJSON(JSONObject json) throws JSONException {
         ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
         JSONArray results = json.getJSONArray("items");
-        System.out.println(results.length());
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < results.length(); i++) {
             String name = results.getJSONObject(i).getString("title");
             String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
             ArrayList<String> imagesURL = parseArray(results.getJSONObject(i).getJSONArray("images"), "original");
-            //
 
             String subject = "Unknown";
             try {

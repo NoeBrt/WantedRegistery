@@ -26,16 +26,16 @@ public class WantedPersonRepository implements IWantedPersonRepository {
             //Recherche du nombre de pages
             String totalLine1 = requestPage(1);
             JSONObject toDecode1 = new JSONObject(totalLine1);
-            int nbPages = decodeNbPages(toDecode1);
+            //int nbPages = decodeNbPages(toDecode1);
 
-            for (int page = 1; page <= nbPages; page++) {
+            //for (int page = 1; page <= nbPages; page++) {
                 //Exécution de la requête HTTP
-                String totalLine2 = requestPage(page);
+                String totalLine2 = requestPage(1); //SEULEMENT LA PREMIERE POUR GAIN DE PLACE
                 //Récupération des données
                 JSONObject toDecode2 = new JSONObject(totalLine2);
                 //Décode l'objet JSON et récupère le ArrayList
                 response.addAll(parser.parseJSON(toDecode2));
-            }
+            //}
         } catch (Exception e) {
             //Gestion des erreurs
             e.printStackTrace();
