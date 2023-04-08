@@ -1,9 +1,13 @@
 package Activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Layout;
@@ -16,6 +20,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.wantedregistery.R;
 
@@ -100,6 +106,22 @@ public class WantedDetailsActivity extends AppCompatActivity {
                 index++;
             }
         }
+    }
+    private static final int REQUEST_CALL_PHONE_PERMISSION = 1;
+
+    public void callButtonClicked(View view) {
+        String phoneNumber = "911"; // phone number to call
+
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+        callIntent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(callIntent);
+    }
+
+
+
+
+    public void mailButtonClicked(View view) {
+
     }
 
 
