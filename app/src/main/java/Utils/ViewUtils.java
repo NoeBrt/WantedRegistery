@@ -3,6 +3,7 @@ package Utils;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Layout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -29,7 +30,6 @@ public class ViewUtils {
         titleView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        titleView.setPadding(5, 5, 2, 0);
         titleView.setId(id);
         return titleView;
 
@@ -44,15 +44,27 @@ public class ViewUtils {
         contentView.setId(id);
         return contentView;
     }
-    public static void addRow(String title, String content, TableLayout tableLayout, Context context, float keySize){
-        if (content.equals("null")){
-        TableRow row = new TableRow(context);
-        row.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
-        row.addView(createTextTitle(context,title, View.generateViewId(),keySize));
-        row.addView(createTextContent(context,content, View.generateViewId()));
-        tableLayout.addView(row);
+    public static void addRow(String title, String content, TableLayout tableLayout, Context context){
+        if (!content.equals("null")) {
+            TableRow row = new TableRow(context);
+            row.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+            TextView titleView = createTextContent(context, title, 50);
+            titleView.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            titleView.setGravity(Gravity.CENTER_VERTICAL);
+            titleView.setTypeface(Typeface.DEFAULT_BOLD);
+            TextView contentView = createTextContent(context, content, 51);
+            contentView.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            contentView.setGravity(Gravity.CENTER_VERTICAL);
+
+            row.addView(titleView);
+            row.addView(contentView);
+            tableLayout.addView(row);
         }
     }
 

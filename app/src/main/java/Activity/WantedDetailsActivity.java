@@ -95,7 +95,7 @@ public class WantedDetailsActivity extends AppCompatActivity {
         index++;
         for (Map.Entry<String, String> entry : tableContent.entrySet()) {
             ViewUtils.addRow(entry.getKey(),entry.getValue(),
-                    (TableLayout) findViewById(R.id.tableLayout),this,5);
+                    (TableLayout) findViewById(R.id.tableLayout),this);
             index++;
         }
 
@@ -159,6 +159,16 @@ public class WantedDetailsActivity extends AppCompatActivity {
     private void addImage(Bitmap bitmap){
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(bitmap);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, // width
+                LinearLayout.LayoutParams.WRAP_CONTENT // height
+        );
+
+        int marginInPx = 16; // convert from dp to pixels if needed
+        layoutParams.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
+        imageView.setLayoutParams(layoutParams);
+     //   imageView.setScrollContainer(true);
+        imageView.setCropToPadding(false);
         imageLayout.addView(imageView);
     }
 
