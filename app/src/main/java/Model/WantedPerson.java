@@ -16,7 +16,7 @@ import BitmapProcess.BitmapProcess;
 public class WantedPerson {
 
     private Bitmap photo;
-    private ArrayList<Bitmap> images;
+    private ArrayList<String> images;
     private String name;
     private String subject;
     private String uid;
@@ -38,10 +38,7 @@ public class WantedPerson {
 
     public WantedPerson(String photoURL, ArrayList<String> imagesURL, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution) {
         photo = (new BitmapProcess()).fromURLtoBitmap(photoURL);
-        images = new ArrayList<Bitmap>();
-        imagesURL.forEach((image) -> {
-            images.add((new BitmapProcess()).fromURLtoBitmap(image));
-        });
+        images = imagesURL;
         this.name = name;
         this.subject = subject;
         this.uid = uid;
@@ -64,12 +61,9 @@ public class WantedPerson {
         System.out.println("photoURL : " + photoURL);
     }
 
-    public WantedPerson(byte[] photo, ArrayList<Bitmap> images, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution) {
+    public WantedPerson(byte[] photo, ArrayList<String> images, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution) {
         this.photo = BitmapFactory.decodeByteArray(photo, 0, photo.length);
-        this.images = new ArrayList<>();
-        images.forEach((image) -> {
-            this.images.add(image);
-        });
+        this.images = images;
         this.name = name;
         this.subject = subject;
         this.uid = uid;
@@ -264,8 +258,8 @@ public class WantedPerson {
         this.caution = caution;
     }
 
-    public ArrayList<Bitmap> getImagesBitmap() { return images; }
 
+    /*
     public ArrayList<byte[]> getImagesBytes() {
         ArrayList<byte[]> imagesByte = new ArrayList<>();
         for (Bitmap image : images) {
@@ -283,7 +277,7 @@ public class WantedPerson {
 
         return imagesByte;
     }
-
+*/
     public LinkedHashMap<String,String> getDescriptionContent() {
         LinkedHashMap<String,String> content = new LinkedHashMap<String,String>();
         content.put("Date of Birth",dateOfBirthUsed);
@@ -307,5 +301,13 @@ public class WantedPerson {
         content.put("Remarks", remarks);
         content.put("Caution", caution);
         return content;
+    }
+
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
     }
 }

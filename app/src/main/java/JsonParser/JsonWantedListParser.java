@@ -21,20 +21,20 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
             String name = results.getJSONObject(i).getString("title");
             String photoURL = results.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("thumb");
             ArrayList<String> imagesURL = parseArray(results.getJSONObject(i).getJSONArray("images"), "original");
-
             String subject = "Unknown";
+            String dateOfBirthUsed = "null";
             try {
                 subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
+                dateOfBirthUsed=String.join("\n ",parseArray(results.getJSONObject(i).getJSONArray("dates_of_birth_used")));
             } catch (JSONException e) {
 
             }
-
             String uid = results.getJSONObject(i).getString("uid");
             String weightMin = results.getJSONObject(i).getString("weight_min");
             String weightMax = results.getJSONObject(i).getString("weight_max");
             String weight = weightMin + "-" + weightMax;
             if (weightMin.equals(weightMax)) weight = weightMin;
-            String dateOfBirthUsed = results.getJSONObject(i).getString("dates_of_birth_used");
+
             String age = results.getJSONObject(i).getString("age_range");
             String hair = results.getJSONObject(i).getString("hair");
             String eyes = results.getJSONObject(i).getString("eyes");
@@ -52,7 +52,7 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
 
             }
 
-            String remarks = results.getJSONObject(i).getString("remarks");
+            String remarks = String.valueOf(Html.fromHtml(results.getJSONObject(i).getString("remarks")));
             String caution = String.valueOf(Html.fromHtml(results.getJSONObject(i).getString("caution")));
             WantedPerson p = new WantedPerson(photoURL, imagesURL, name, subject, uid, weight, dateOfBirthUsed, age, hair, eyes, height, sex, race, nationality, scarsAndMarks, ncic, reward, aliases, remarks, caution);
             response.add(p);
@@ -62,10 +62,21 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
         return response;
     }
 
+    //
     private ArrayList<String> parseArray(JSONArray arrayJson, String key) throws JSONException {
         ArrayList<String> response = new ArrayList<String>();
         for (int i = 0; i < arrayJson.length(); i++) {
             response.add(arrayJson.getJSONObject(i).getString(key));
+        }
+
+        return response;
+    }
+
+    private ArrayList<String> parseArray(JSONArray arrayJson) throws JSONException {
+        if (arrayJson == null) return new ArrayList<String>();
+        ArrayList<String> response = new ArrayList<String>();
+        for (int i = 0; i < arrayJson.length(); i++) {
+            response.add(arrayJson.getString(i));
         }
 
         return response;

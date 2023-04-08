@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wantedregistery.R;
 import Model.WantedPerson;
+import Utils.ColorChooser;
 
 import java.util.ArrayList;
 
@@ -36,10 +37,7 @@ public class WantedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ImageView image = ((ViewHolderWanted) holder).getImageViewPhoto();
         image.setImageBitmap(P.get(position).getPhoto());
-        if (P.get(position).getSubject().contains("Missing Persons")) {
-            image.setBackgroundColor(Color.argb(200, 29, 60, 155));
-        } else image.setBackgroundColor(Color.argb(255, 208, 4, 49));
-
+        image.setBackgroundColor(ColorChooser.getColorFromText(P.get(position).getSubject()));
         ((ViewHolderWanted) holder).getTextViewName().setText(P.get(position).getName());
         ((ViewHolderWanted) holder).getTextViewSubject().setText(P.get(position).getSubject());
         ((ViewHolderWanted) holder).getUid().setText(P.get(position).getUid());

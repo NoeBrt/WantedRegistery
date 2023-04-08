@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -92,6 +93,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
     public void displayDetails(View view) {
         Intent i = new Intent(this, WantedDetailsActivity.class);
         i.putExtra("uid", ((TextView) view.findViewById(R.id.uid)).getText().toString());
+        i.putExtra("color",view.findViewById(R.id.wantedImage).getSolidColor());
         startActivity(i);
     }
 
@@ -117,7 +119,11 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             if (result.size() > 1) {
                 System.out.println(result);
                 for (WantedPerson p : result) {
-                    db.insertWanted(p.getPhotoByte(), p.getImagesBitmap(), p.getName(), p.getSubject(),p.getUid(), p.getWeight(), p.getDateOfBirthUsed(), p.getAge(), p.getHair(), p.getEyes(), p.getHeight(), p.getSex(), p.getRace(), p.getNationality(), p.getScarsAndMarks(), p.getNcic(), p.getReward(), p.getAliases(), p.getRemarks(), p.getCaution(), getContentResolver());
+                    try {
+                        db.insertWanted(p.getPhotoByte(), p.getImages(), p.getName(), p.getSubject(),p.getUid(), p.getWeight(), p.getDateOfBirthUsed(), p.getAge(), p.getHair(), p.getEyes(), p.getHeight(), p.getSex(), p.getRace(), p.getNationality(), p.getScarsAndMarks(), p.getNcic(), p.getReward(), p.getAliases(), p.getRemarks(), p.getCaution(), getContentResolver());
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 

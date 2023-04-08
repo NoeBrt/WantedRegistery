@@ -1,25 +1,36 @@
 package Activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wantedregistery.R;
 
 import DAO.DBHandler;
 import Model.WantedPerson;
-import Repository.IWantedPersonRepository;
-import Repository.WantedPersonRepository;
+import Utils.ColorChooser;
 import Utils.ViewUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,6 +42,7 @@ public class WantedDetailsActivity extends AppCompatActivity {
     HorizontalScrollView imageScrollView;
     TextView title;
     WantedPerson person;
+    TextView subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +52,36 @@ public class WantedDetailsActivity extends AppCompatActivity {
         db = new DBHandler(this);
 
         uid = getIntent().getStringExtra("uid");
+
         imageLayout = findViewById(R.id.ImageLayout);
         imageScrollView = findViewById(R.id.ImageScrollView);
         title = findViewById(R.id.indiv_title);
-        /* IWantedPersonRepository wantedPersonRepository = new WantedPersonRepository();
-        RequestTask requestTask = new RequestTask(wantedPersonRepository);
-        requestTask.execute(); */
+        subject =findViewById(R.id.indiv_subject);
 
         WantedPerson wantedPerson = db.select(uid);
-        display(wantedPerson);
-        addAllImages(wantedPerson);
+        try {
+            display(wantedPerson);
+
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);}
+
     }
 
 
-    private void display(WantedPerson person) {
+
+
+
+    private void display(WantedPerson person) throws IOException, URISyntaxException {
         this.person = person;
         title.setText(person.getName());
+        subject.setText(person.getSubject());
+        subject.setTextColor(ColorChooser.getColorFromText(person.getSubject()));
 
-        addAllImages(person);
+
+        loadImagesFromUrl(person.getImages().toArray(new String[0]));
         LinkedHashMap<String,String> content = person.getAdditionalContent();
         LinkedHashMap<String,String> tableContent = person.getDescriptionContent();
+        System.out.println(" table content "+tableContent);
 
         int index=0;
         ViewUtils.addTitleAndContent((LinearLayout) findViewById(R.id.linearLayoutIndividual),
@@ -80,39 +102,45 @@ public class WantedDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void addAllImages(WantedPerson person) {
-        for (Bitmap image : person.getImagesBitmap()){
-            addImage(image);
-        }
+
+
+
+
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadImagesFromUrl(String ...imageUrl) {
+        new AsyncTask<String, Void, ArrayList<Bitmap>>() {
+            @Override
+            protected ArrayList<Bitmap> doInBackground(String... urls) {
+                ArrayList<Bitmap> bitmaps = new ArrayList<>();
+                try {
+                    for (String url : urls){
+                        InputStream inputStream = new URL(url).openStream();
+                        bitmaps.add(BitmapFactory.decodeStream(inputStream));
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return bitmaps;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Bitmap> bitmap) {
+                for (Bitmap b : bitmap){
+                    addImage(b);
+                }
+            }
+        }.execute(imageUrl);
+
+    }
+    private void addImage(Bitmap bitmap){
+        ImageView imageView = new ImageView(this);
+        imageView.setImageBitmap(bitmap);
+        imageLayout.addView(imageView);
     }
 
-    private void addImage(Bitmap photo) {
-        ImageView img = new ImageView(this);
-        img.setImageBitmap(photo);
-        /*  int marginInPixels = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_PT, 4, getResources().getDisplayMetrics());
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) img.getLayoutParams();
-        layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);*/
-        //img.setLayoutParams(layoutParams);
 
-        imageLayout.addView(img);
-    }
 
-    private class RequestTask extends AsyncTask<Void, Void, WantedPerson> {
 
-        private final IWantedPersonRepository wantedPersonRepository;
-
-        private RequestTask(IWantedPersonRepository wantedPersonRepository) {
-            this.wantedPersonRepository = wantedPersonRepository;
-        }
-
-        @Override
-        protected WantedPerson doInBackground(Void... voids) {
-            return wantedPersonRepository.findWanted(uid);
-        }
-
-        protected void onPostExecute(@NonNull WantedPerson result) {
-            display(result);
-        }
-    }
 }

@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import Model.WantedPerson;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -58,7 +59,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(query2);
     }
 
-    public void insertWanted(byte[] photo, ArrayList<Bitmap> images, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution, ContentResolver cr) {
+    public void insertWanted(byte[] photo, ArrayList<String> images, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution, ContentResolver cr) throws FileNotFoundException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues row = new ContentValues();
         row.put(DBContract.Form.COLUMN_PHOTO, photo);
@@ -84,10 +85,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ContentValues row2 = new ContentValues();
         int i = 0;
-        for (Bitmap image : images) {
-            String imageURL = MediaStore.Images.Media.insertImage(cr, image, name + Integer.toString(i), "");
+        for (String imageurl : images) {
             row2.put(DBContract.Form.COLUMN_UID, uid);
-            row2.put(DBContract.Form.COLUMN_IMAGE, imageURL);
+            row2.put(DBContract.Form.COLUMN_IMAGE, imageurl);
             db.insert(DBContract.Form.TABLE_NAME2, null, row2);
             i++;
         }
@@ -169,22 +169,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return wantedPerson;
     }
 
-    public ArrayList<Bitmap> selectImages(String uid) {
+    public ArrayList<String> selectImages(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME2 + " WHERE "
                 + DBContract.Form.COLUMN_UID + " = '" + uid + "'";
         Cursor cursor = db.rawQuery(query, null);
 
-        ArrayList<Bitmap> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
         int i = 0;
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String imagePath = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_IMAGE));
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            options.inTempStorage = new byte[512];
-            Bitmap image = BitmapFactory.decodeFile(imagePath, options);
-            responses.add(image);
+
+            responses.add(imagePath);
         }
 
         cursor.close();

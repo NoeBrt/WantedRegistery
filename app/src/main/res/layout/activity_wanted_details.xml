@@ -32,8 +32,18 @@
     <TextView
         android:textStyle="bold"
         android:textSize="10pt"
-        android:layout_margin="15pt"
+        android:layout_marginTop="10pt"
         android:id="@+id/indiv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Title"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:textStyle="italic"
+        android:layout_marginTop="1pt"
+        android:textSize="7pt"
+        android:id="@+id/indiv_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Title"
@@ -41,31 +51,16 @@
         />
 
     <TableLayout
+        android:layout_margin="15pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0"
         android:id="@+id/tableLayout">
     </TableLayout>
-
-       <!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/callButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:src="@mipmap/call_icon"
-        android:layout_margin="16dp"
-        android:contentDescription="TODO" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/messageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@mipmap/email_1"
-        android:contentDescription="TODO" />
-
--->
+        
+        android:layout_gravity="bottom"
+        />
 </LinearLayout>
 </ScrollView>
