@@ -15,4 +15,7 @@
     <string name="confirmButton">Confirm</string>
     <string name="nameTextView">"First name : "</string>
     <string name="lastNameTextView">Last name :</string>
+    <string name="emailTextView">Email Address :</string>
+    <string name="phoneTextView">Phone Number :</string>
+
 </resources>
