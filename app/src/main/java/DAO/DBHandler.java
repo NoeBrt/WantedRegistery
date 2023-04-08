@@ -9,10 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import Model.WantedPerson;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -83,10 +85,11 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues row2 = new ContentValues();
         int i = 0;
         for (Bitmap image : images) {
-            String imageURL = MediaStore.Images.Media.insertImage(cr, image, Integer.toString(i), "");
+            String imageURL = MediaStore.Images.Media.insertImage(cr, image, name + Integer.toString(i), "");
             row2.put(DBContract.Form.COLUMN_UID, uid);
             row2.put(DBContract.Form.COLUMN_IMAGE, imageURL);
             db.insert(DBContract.Form.TABLE_NAME2, null, row2);
+            i++;
         }
     }
 
@@ -173,6 +176,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
 
         ArrayList<Bitmap> responses = new ArrayList<>();
+        int i = 0;
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String imagePath = cursor.getString(cursor.getColumnIndex(DBContract.Form.COLUMN_IMAGE));
 

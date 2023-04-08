@@ -23,9 +23,10 @@
         android:id="@+id/wantedName"
         android:layout_toRightOf="@id/wantedImage"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="80sp"
+        android:layout_marginLeft="100sp"
         android:fontFamily="sans-serif-black"
         android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
         android:id="@+id/wantedSubject"
         android:layout_below="@id/wantedName"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="80sp"
+        android:layout_marginLeft="100sp"
         android:fontFamily="sans-serif-black" />
 
 </RelativeLayout>

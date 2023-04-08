@@ -6,14 +6,13 @@
     <string name="Eyes">Eyes</string>
     <string name="Weight">Weight</string>
     <string name="Height">Height</string>
-
     <string name="Sex">Sex</string>
     <string name="Race">Race</string>
     <string name="Remark">Remark</string>
     <string name="Details">Details</string>
     <string name="DownloadPoster">Details</string>
-    <string name="nameTextView">"Contact informations : "</string>
+    <string name="contact">"Contact informations : "</string>
     <string name="confirmButton">Confirm</string>
-
-
+    <string name="nameTextView">"First name : "</string>
+    <string name="lastNameTextView">Last name :</string>
 </resources>
