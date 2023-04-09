@@ -75,24 +75,28 @@ public class WantedDetailsActivity extends AppCompatActivity {
         LinkedHashMap<String,String> tableContent = person.getDescriptionContent();
         System.out.println("Table content : " + tableContent);
 
-        int index=0;
+        int index = 0;
         ViewUtils.addTitleAndContent((LinearLayout) findViewById(R.id.linearLayoutIndividual),
                 "Aliases",content.get("Aliases"), index, 20);
         index++;
         for (Map.Entry<String, String> entry : tableContent.entrySet()) {
-            ViewUtils.addRow(entry.getKey(),entry.getValue(),
-                    (TableLayout) findViewById(R.id.tableLayout),this);
+            if (!entry.getValue().equals("null")) {
+                ViewUtils.addRow(entry.getKey(), " : " + entry.getValue(),
+                        (TableLayout) findViewById(R.id.tableLayout),this);
+            }
+
             index++;
         }
 
         for (Map.Entry<String, String> entry : content.entrySet()) {
-            if (!entry.getKey().equals("Aliases")){
+            if (!entry.getKey().equals("Aliases")) {
                 ViewUtils.addTitleAndContent((LinearLayout) findViewById(R.id.linearLayoutIndividual),
-                        entry.getKey(),entry.getValue(), index, 20);
+                        entry.getKey(), entry.getValue(), index, 20);
                 index++;
             }
         }
     }
+
     private static final int REQUEST_CALL_PHONE_PERMISSION = 1;
 
     public void callButtonClicked(View view) {
@@ -104,9 +108,17 @@ public class WantedDetailsActivity extends AppCompatActivity {
     }
 
     public void mailButtonClicked(View view) {
-        System.out.println("mail button clicked");
+        System.out.println("Mail button clicked");
+
+        MailFragment mailFragment = new MailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", uid);
+        bundle.putString("name", title.getText().toString());
+        mailFragment.setArguments(bundle);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.email_fragment, new MailFragment());
+
         ft.addToBackStack(null);
         ft.commit();
     }

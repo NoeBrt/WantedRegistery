@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ViewUtils {
 
     public static void addTitleAndContent(LinearLayout layout, String title,String content, int id, float TitleSize){
-        if(content.equals("null"))
+        if (content.equals("null"))
             return;
         layout.addView(createTextTitle(layout.getContext(),title,id,TitleSize));
         layout.addView(createTextContent(layout.getContext(),content,id+1));
@@ -32,7 +32,6 @@ public class ViewUtils {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         titleView.setId(id);
         return titleView;
-
     }
 
     public static TextView createTextContent(Context context, String content, int id) {
@@ -44,6 +43,7 @@ public class ViewUtils {
         contentView.setId(id);
         return contentView;
     }
+
     public static void addRow(String title, String content, TableLayout tableLayout, Context context){
         if (!content.equals("null")) {
             TableRow row = new TableRow(context);
@@ -67,5 +67,4 @@ public class ViewUtils {
             tableLayout.addView(row);
         }
     }
-
 }
