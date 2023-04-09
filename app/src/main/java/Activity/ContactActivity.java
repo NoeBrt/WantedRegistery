@@ -56,8 +56,7 @@ public class ContactActivity extends AppCompatActivity {
         editor.putString("phone", phone.getText().toString());
         editor.apply();
 
-        Intent i = new Intent(this, WantedRecyclerActivity.class);
-        startActivity(i);
+        this.finish();
     }
 
     @Override
