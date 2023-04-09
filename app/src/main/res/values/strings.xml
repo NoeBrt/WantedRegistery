@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WantedRegistery</string>
+    <string name="fbiWantedPeople">FBI Wanted People</string>
+    <string name="contactButton">Contact</string>
     <string name="Title">\"TITLE\"</string>
     <string name="Age">Age</string>
     <string name="Hair">Hair</string>
@@ -11,16 +13,15 @@
     <string name="Remark">Remark</string>
     <string name="Details">Details</string>
     <string name="DownloadPoster">Details</string>
-    <string name="contact">"Contact informations : "</string>
+    <string name="contact">Contact informations: </string>
     <string name="confirmButton">Confirm</string>
-    <string name="nameTextView">"First name : "</string>
-    <string name="lastNameTextView">Last name :</string>
-    <string name="emailTextView">Email Address :</string>
-    <string name="phoneTextView">Phone Number :</string>
+    <string name="nameTextView">"First name: </string>
+    <string name="lastNameTextView">Last name: </string>
+    <string name="emailTextView">Email address: </string>
+    <string name="phoneTextView">Phone number: </string>
     <string name="send">Send</string>
     <string name="email">fbi.asking@gmail.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">cancel</string>
-
 </resources>

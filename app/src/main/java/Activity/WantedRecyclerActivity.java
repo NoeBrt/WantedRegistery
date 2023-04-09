@@ -60,7 +60,7 @@ public class WantedRecyclerActivity extends AppCompatActivity {
             RequestTask requestTask = new RequestTask(wantedPersonRepository);
             requestTask.execute();
 
-        } else display(20);
+        } else display(50);
     }
 
 
@@ -127,8 +127,19 @@ public class WantedRecyclerActivity extends AppCompatActivity {
                 }
             }
 
-            display(25);
+            display(50);
             System.out.println("FINISH");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        display(50);
     }
 }

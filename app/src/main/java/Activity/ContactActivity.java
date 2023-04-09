@@ -17,9 +17,7 @@ public class ContactActivity extends AppCompatActivity {
     private EditText name;
     private EditText lastName;
     private EditText email;
-
     private EditText phone;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +30,14 @@ public class ContactActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.emailEditText);
         phone = (EditText) findViewById(R.id.phoneEditText);
 
+        setupLayout();
+    }
+
+    public void setupLayout() {
         name.setText(sharedPref.getString("name", ""));
         lastName.setText(sharedPref.getString("lastName", ""));
         email.setText(sharedPref.getString("email", ""));
         phone.setText(sharedPref.getString("phone", ""));
-
-
     }
 
     public void saveData(View v) {
@@ -50,5 +50,16 @@ public class ContactActivity extends AppCompatActivity {
 
         Intent i = new Intent(this, WantedRecyclerActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+       setupLayout();
     }
 }

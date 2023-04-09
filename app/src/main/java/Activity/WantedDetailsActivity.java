@@ -54,20 +54,15 @@ public class WantedDetailsActivity extends AppCompatActivity {
         imageLayout = findViewById(R.id.ImageLayout);
         imageScrollView = findViewById(R.id.ImageScrollView);
         title = findViewById(R.id.indiv_title);
-        subject =findViewById(R.id.indiv_subject);
+        subject = findViewById(R.id.indiv_subject);
 
         WantedPerson wantedPerson = db.select(uid);
         try {
             display(wantedPerson);
-
         } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);}
-
+            throw new RuntimeException(e);
+        }
     }
-
-
-
-
 
     private void display(WantedPerson person) throws IOException, URISyntaxException {
         this.person = person;
@@ -79,7 +74,7 @@ public class WantedDetailsActivity extends AppCompatActivity {
         loadImagesFromUrl(person.getImages().toArray(new String[0]));
         LinkedHashMap<String,String> content = person.getAdditionalContent();
         LinkedHashMap<String,String> tableContent = person.getDescriptionContent();
-        System.out.println(" table content "+tableContent);
+        System.out.println("Table content : " + tableContent);
 
         int index=0;
         ViewUtils.addTitleAndContent((LinearLayout) findViewById(R.id.linearLayoutIndividual),
@@ -109,22 +104,13 @@ public class WantedDetailsActivity extends AppCompatActivity {
         startActivity(callIntent);
     }
 
-
-
-
     public void mailButtonClicked(View view) {
         System.out.println("mail button clicked");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.email_fragment, new MailFragment());
         ft.addToBackStack(null);
         ft.commit();
-
     }
-
-
-
-
-
 
     @SuppressLint("StaticFieldLeak")
     private void loadImagesFromUrl(String ...imageUrl) {
@@ -151,8 +137,8 @@ public class WantedDetailsActivity extends AppCompatActivity {
                 }
             }
         }.execute(imageUrl);
-
     }
+
     private void addImage(Bitmap bitmap){
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(bitmap);
@@ -161,15 +147,27 @@ public class WantedDetailsActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT // height
         );
 
-        int marginInPx = 16; // convert from dp to pixels if needed
+        int marginInPx = 16; //Convert from dp to pixels if needed
         layoutParams.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
         imageView.setLayoutParams(layoutParams);
-     //   imageView.setScrollContainer(true);
+        //imageView.setScrollContainer(true);
         imageView.setCropToPadding(false);
         imageLayout.addView(imageView);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
-
-
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        WantedPerson wantedPerson = db.select(uid);
+        try {
+            display(wantedPerson);
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
