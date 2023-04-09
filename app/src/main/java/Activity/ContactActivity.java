@@ -60,6 +60,6 @@ public class ContactActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-       setupLayout();
+        setupLayout();
     }
 }

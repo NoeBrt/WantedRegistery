@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:text="@string/contact"
         android:fontFamily="sans-serif-black"
+        android:layout_below="@id/toolbar"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_margin="5dp" />
@@ -98,6 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/emailLayout"
         android:layout_width="match_parent"
@@ -120,6 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/phoneLayout"
         android:layout_width="match_parent"
@@ -142,7 +145,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
     <Button
         android:id="@+id/confirmButton"

@@ -70,7 +70,6 @@ public class WantedDetailsActivity extends AppCompatActivity {
         subject.setText(person.getSubject());
         subject.setTextColor(ColorChooser.getColorFromText(person.getSubject()));
 
-
         loadImagesFromUrl(person.getImages().toArray(new String[0]));
         LinkedHashMap<String,String> content = person.getAdditionalContent();
         LinkedHashMap<String,String> tableContent = person.getDescriptionContent();
