@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,7 +25,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         name = (EditText) findViewById(R.id.nameEditText);
         lastName = (EditText) findViewById(R.id.lastNameEditText);
         email = (EditText) findViewById(R.id.emailEditText);

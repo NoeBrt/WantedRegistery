@@ -129,10 +129,8 @@ public class WantedDetailsActivity extends AppCompatActivity {
         bundle.putString("uid", uid);
         bundle.putString("name", title.getText().toString());
         mailFragment.setArguments(bundle);
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.email_fragment, new MailFragment());
-
+        ft.replace(R.id.email_fragment, mailFragment);
         ft.addToBackStack(null);
         ft.commit();
     }

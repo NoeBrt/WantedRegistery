@@ -10,25 +10,26 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="11pt">
-
+    android:layout_marginBottom="11pt"
+    >
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="Activity.WantedDetailsActivity"
     android:id="@+id/linearLayoutIndividual"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp">
-
+    >
     <HorizontalScrollView
+
         android:id="@+id/ImageScrollView"
         android:gravity="center"
         android:isScrollContainer="true"
         android:cropToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:fillViewport="true"
+
+        >
 
        <LinearLayout
            android:layout_width="wrap_content"
@@ -39,8 +40,14 @@
            android:layout_margin="10pt"
            android:layout_marginEnd="10pt"
            android:isScrollContainer="true"
-           android:cropToPadding="false">
+           android:cropToPadding="false"
+
+
+
+           >
+
        </LinearLayout>
+
     </HorizontalScrollView>
 
     <TextView
@@ -51,34 +58,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Title"
-        android:textAlignment="center"/>
-
+        android:textAlignment="center"
+        />
     <TextView
         android:textStyle="italic"
         android:layout_marginTop="1pt"
         android:layout_marginBottom="10pt"
+
         android:textSize="7pt"
         android:id="@+id/indiv_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Title"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tableLayout"
-        android:layout_marginBottom="10dp">
+        android:id="@+id/tableLayout">
     </TableLayout>
+
+
 </LinearLayout>
+
 
 </ScrollView>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="bottom|end">
+        android:layout_gravity="bottom|end"
 
+        >
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/CallButton"
         android:layout_width="wrap_content"
@@ -87,8 +99,8 @@
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:layout_margin="11pt"
-        android:onClick="callButtonClicked"/>
-
+        android:onClick="callButtonClicked"
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/MailButton"
         android:layout_width="wrap_content"
@@ -97,11 +109,12 @@
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:layout_margin="11pt"
-        android:onClick="mailButtonClicked"/>
-    </LinearLayout>
+        android:onClick="mailButtonClicked"
 
+        /></LinearLayout>
     <FrameLayout
         android:id="@+id/email_fragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        />
 </FrameLayout>
