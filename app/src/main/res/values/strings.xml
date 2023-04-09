@@ -17,5 +17,10 @@
     <string name="lastNameTextView">Last name :</string>
     <string name="emailTextView">Email Address :</string>
     <string name="phoneTextView">Phone Number :</string>
+    <string name="send">Send</string>
+    <string name="email">fbi.asking@gmail.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">cancel</string>
 
 </resources>

@@ -112,4 +112,9 @@
         android:onClick="mailButtonClicked"
 
         /></LinearLayout>
+    <FrameLayout
+        android:id="@+id/email_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </FrameLayout>
