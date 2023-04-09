@@ -52,7 +52,8 @@ public class MailFragment extends Fragment implements View.OnClickListener {
         String emailPref= sharedPref.getString("email", "");
         String phonePref= sharedPref.getString("phone", "");
         String bodyText="";
-       bodyText+="My name is "+namePref+" "+lastnamePref+" and my email is "+emailPref+" and my phone number is "+phonePref+"";
+        if(!(namePref.equals("") || lastnamePref.equals("") || emailPref.equals("") || phonePref.equals(""))){
+       bodyText+="My name is "+namePref+" "+lastnamePref+" and my email is "+emailPref+" and my phone number is "+phonePref+"";}
        bodyText+="\n\"I have more informations about the  following case : "+ name + "'. Please, contact me for more.";
         body.setText(bodyText);
 
