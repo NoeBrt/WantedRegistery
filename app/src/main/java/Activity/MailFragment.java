@@ -28,12 +28,22 @@ public class MailFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_text, container, false);
     }
 
+    /**
+     * Méthode qui s'effectue automatiquement lorsque la vue est créée
+     * (ici, ajoute le onClick sur les boutons)
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     public void onViewCreated(View view, Bundle savedInstanceState) {
         view.findViewById(R.id.sendButton).setOnClickListener((View.OnClickListener) this);
         view.findViewById(R.id.cancelButton).setOnClickListener((View.OnClickListener) this);
     }
 
     @Override
+    /**
+     * Gestion du clic sur le bouton de validation ou d'annulation
+     */
     public void onClick(View v) {
         if (v.getId() == R.id.sendButton) {
             sendEmail();
@@ -43,6 +53,9 @@ public class MailFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Permet d'envoyer un mail lorsque le bouton flottant est pressé
+     */
     private void sendEmail() {
         Intent email = new Intent(Intent.ACTION_SENDTO);
 

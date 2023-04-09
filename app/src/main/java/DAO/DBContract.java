@@ -2,6 +2,9 @@ package DAO;
 
 public final class DBContract {
 
+    /**
+     * Formulaire de la base de données de l'application
+     */
     public static class Form {
         public static final String TABLE_NAME = "wanted";
 

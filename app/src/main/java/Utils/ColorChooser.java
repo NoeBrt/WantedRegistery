@@ -3,8 +3,13 @@ package Utils;
 import android.graphics.Color;
 
 public class ColorChooser {
-    public static int getColorFromText(String text){
 
+    /**
+     * Permet de choisir le couleur à associer à une personne recherchée
+     * @param text Type d'enquête menée
+     * @return Nombre entier de la couleur
+     */
+    public static int getColorFromText(String text){
         if (text.contains("Missing Person")){
             return Color.argb(255, 255, 204, 255);
 

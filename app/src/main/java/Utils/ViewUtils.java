@@ -15,14 +15,30 @@ import java.util.Objects;
 
 public class ViewUtils {
 
-    public static void addTitleAndContent(LinearLayout layout, String title,String content, int id, float TitleSize){
+    /**
+     * Ajoute un titre et un contenu textuel à notre layout
+     * @param layout Layout en question
+     * @param title Texte du titre
+     * @param content Contenu textuel
+     * @param id ID du layout
+     * @param TitleSize Taille du titre
+     */
+    public static void addTitleAndContent(LinearLayout layout, String title, String content, int id, float TitleSize){
         if (content.equals("null"))
             return;
-        layout.addView(createTextTitle(layout.getContext(),title,id,TitleSize));
-        layout.addView(createTextContent(layout.getContext(),content,id+1));
+        layout.addView(createTextTitle(layout.getContext(), title, id, TitleSize));
+        layout.addView(createTextContent(layout.getContext(), content,id + 1));
     }
 
-    public static TextView createTextTitle(Context context, String title, int id,float size) {
+    /**
+     * Créer un vue titre à partir d'un texte
+     * @param context Contexte de l'activite
+     * @param title Texte du titre
+     * @param id ID de la vue
+     * @param size Taille du titre
+     * @return Vue du titre sous forme de TextView
+     */
+    public static TextView createTextTitle(Context context, String title, int id, float size) {
         TextView titleView = new TextView(context);
         titleView.setText(title);
         titleView.setTextSize(size);
@@ -34,6 +50,13 @@ public class ViewUtils {
         return titleView;
     }
 
+    /**
+     * Créer une nouvelle vue pour chaque élément textuel de l'enquête
+     * @param context Context de l'activité
+     * @param content Contenu textuel
+     * @param id ID de la vue
+     * @return Nouveau TextView à ajouter au layout
+     */
     public static TextView createTextContent(Context context, String content, int id) {
         TextView contentView = new TextView(context);
         contentView.setText(content);
@@ -44,7 +67,14 @@ public class ViewUtils {
         return contentView;
     }
 
-    public static void addRow(String title, String content, TableLayout tableLayout, Context context){
+    /**
+     * Ajoute une nouvelle ligne au tableau de données qui décrivent une personne dans sa page
+     * @param title
+     * @param content
+     * @param tableLayout
+     * @param context
+     */
+    public static void addRow(String title, String content, TableLayout tableLayout, Context context) {
         if (!content.equals("null")) {
             TableRow row = new TableRow(context);
             row.setLayoutParams(new TableLayout.LayoutParams(

@@ -63,7 +63,10 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         } else display(50);
     }
 
-
+    /**
+     * Test si l'appareil est connecté et a accès à Internet
+     * @return Le résultat du test sous forme de booléen
+     */
     private boolean internetConnectionTest() {
         try {
             ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -76,6 +79,10 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Affiche la liste des personnes recherchées dans le layout
+     * @param limit Limite max de personnes à afficher
+     */
     public void display(int limit) {
         ArrayList<WantedPerson> P = db.select(limit);
         System.out.println(P);
@@ -97,11 +104,19 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Permet l'ouverture de l'écran de gestion des informations de contact
+     * @param view Vue inhérente au onClick
+     */
     public void editContact(View view) {
         Intent i = new Intent(this, ContactActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Classe privée permettant de gérer la récupération du JSON des personnes recherchées,
+     * l'ajout dans une BD de chacune d'entre elles après parsing, avant de retourner une liste
+     */
     private class RequestTask extends AsyncTask<Void, Void, ArrayList<WantedPerson>> {
 
         private final IWantedPersonRepository wantedPersonRepository;
@@ -132,11 +147,17 @@ public class WantedRecyclerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Méthode qui s'effectue avant rotation de l'écran
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Méthode qui s'effectue après rotation (réaffiche la liste de personnes)
+     */
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);

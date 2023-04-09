@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import BitmapProcess.BitmapProcess;
 import Model.WantedPerson;
 
+/**
+ * CLASSE INUTILISE DESORMAIS
+ */
 public class JsonWantedDetailParser implements IJsonParserStrategy<WantedPerson> {
 
     @Override

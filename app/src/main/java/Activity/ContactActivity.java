@@ -33,6 +33,9 @@ public class ContactActivity extends AppCompatActivity {
         setupLayout();
     }
 
+    /**
+     * Permet d'ajouter les informations de contact dans les EditText à l'ouverture
+     */
     public void setupLayout() {
         name.setText(sharedPref.getString("name", ""));
         lastName.setText(sharedPref.getString("lastName", ""));
@@ -40,6 +43,10 @@ public class ContactActivity extends AppCompatActivity {
         phone.setText(sharedPref.getString("phone", ""));
     }
 
+    /**
+     * Permet de sauvegarder les informations de contact lors du clic sur le bouton
+     * @param v Vue inhérente au onClick
+     */
     public void saveData(View v) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("name", name.getText().toString());
@@ -53,11 +60,17 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     @Override
+    /**
+     * Méthode qui s'effectue avant la rotation de l'écran
+     */
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
     @Override
+    /**
+     * Méthode qui s'effectue après rotation (re-setup le layout)
+     */
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         setupLayout();

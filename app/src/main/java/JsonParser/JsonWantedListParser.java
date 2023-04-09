@@ -13,6 +13,13 @@ import BitmapProcess.BitmapProcess;
 import Model.WantedPerson;
 
 public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<WantedPerson>> {
+
+    /**
+     * Parse le JSON obtenu auprès de l'API du FBI afin d'obtenir une liste de personnes recherchées
+     * @param json JSON à parser
+     * @return ArrayList contenant les personnes recherchées (sous forme d'objets WantedPerson)
+     * @throws JSONException
+     */
     @Override
     public ArrayList<WantedPerson> parseJSON(JSONObject json) throws JSONException {
         ArrayList<WantedPerson> response = new ArrayList<WantedPerson>();
@@ -25,7 +32,7 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
             String dateOfBirthUsed = "null";
             try {
                 subject = results.getJSONObject(i).getJSONArray("subjects").getString(0);
-                dateOfBirthUsed=String.join("\n ",parseArray(results.getJSONObject(i).getJSONArray("dates_of_birth_used")));
+                dateOfBirthUsed = String.join("\n ", parseArray(results.getJSONObject(i).getJSONArray("dates_of_birth_used")));
             } catch (JSONException e) {
 
             }
@@ -62,7 +69,13 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
         return response;
     }
 
-    //
+    /**
+     * Permet de récupérer auprès du JSON une liste d'URLs des images de l'enquête
+     * @param arrayJson JSON à parser
+     * @param key Type d'images à récupérer (ici, les "original")
+     * @return ArrayList contenant les URLs
+     * @throws JSONException
+     */
     private ArrayList<String> parseArray(JSONArray arrayJson, String key) throws JSONException {
         ArrayList<String> response = new ArrayList<String>();
         for (int i = 0; i < arrayJson.length(); i++) {
@@ -72,6 +85,12 @@ public class JsonWantedListParser implements IJsonParserStrategy<ArrayList<Wante
         return response;
     }
 
+    /**
+     * Permet de récupérer la date de naissance d'une personne recherchée
+     * @param arrayJson JSON à parser
+     * @return ArrayList contenant chaque morceau composant la date de naissance
+     * @throws JSONException
+     */
     private ArrayList<String> parseArray(JSONArray arrayJson) throws JSONException {
         if (arrayJson == null) return new ArrayList<String>();
         ArrayList<String> response = new ArrayList<String>();

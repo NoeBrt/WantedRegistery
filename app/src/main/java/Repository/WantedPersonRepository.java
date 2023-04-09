@@ -18,6 +18,11 @@ import JsonParser.JsonWantedListParser;
 import Model.WantedPerson;
 
 public class WantedPersonRepository implements IWantedPersonRepository {
+
+    /**
+     * Méthode appelant toutes les autres pour la mise en place d'une liste de personnes recherchées
+     * @return ArrayList contenant les personnes recherchées
+     */
     @Override
     public ArrayList<WantedPerson> findWanted() {
         JsonWantedListParser parser = new JsonWantedListParser();
@@ -44,6 +49,11 @@ public class WantedPersonRepository implements IWantedPersonRepository {
         return response;
     }
 
+    /**
+     * Cherche les données d'une personne en particulier
+     * @param uid UID de la personne en question
+     * @return Objet WantedPerson
+     */
     @Override
     public WantedPerson findWanted(String uid) {
         JsonWantedDetailParser parser = new JsonWantedDetailParser();
@@ -57,14 +67,29 @@ public class WantedPersonRepository implements IWantedPersonRepository {
         }
     }
 
+    /**
+     * Cherche la liste de personnes recherchées auprès de l'API
+     * @param page Numéro de la page
+     * @return JSON fournie par l'API, sous forme d'une chaîne de caractères
+     */
     private String requestPage(int page) {
         return request("https://api.fbi.gov/@wanted?pageSize=50&page=" + page);
     }
 
+    /**
+     * Cherche les données d'une personne précise auprès de l'API
+     * @param uid UID de la personne en question
+     * @return JSON fournie par l'API, sous forme d'une chaîne de caractères
+     */
     private String requestDetail(String uid) {
         return request("https://api.fbi.gov/@wanted-person/" + uid);
     }
 
+    /**
+     * Permet de récupérer un JSON en effectuant une requête auprès de l'API
+     * @param request Requête à effectuer
+     * @return JSON fournie par l'API, sous forme d'une chaîne de caractères
+     */
     private String request(String request) {
         System.out.println(request);
         String response = "";

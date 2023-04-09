@@ -64,6 +64,12 @@ public class WantedDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Affiche dans les vues adéquates les différentes composantes d'une personne recherchée
+     * @param person Personne dont il faut afficher les données
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     private void display(WantedPerson person) throws IOException, URISyntaxException {
         this.person = person;
         title.setText(person.getName());
@@ -99,6 +105,10 @@ public class WantedDetailsActivity extends AppCompatActivity {
 
     private static final int REQUEST_CALL_PHONE_PERMISSION = 1;
 
+    /**
+     * Gère le clic sur le bouton flottant d'appel
+     * @param view Vue inhérente au onClick
+     */
     public void callButtonClicked(View view) {
         String phoneNumber = "911"; // phone number to call
 
@@ -107,6 +117,10 @@ public class WantedDetailsActivity extends AppCompatActivity {
         startActivity(callIntent);
     }
 
+    /**
+     * Gère le clic sur le bouton flottant pour envoyer un mail
+     * @param view Vue inhérente au onClick
+     */
     public void mailButtonClicked(View view) {
         System.out.println("Mail button clicked");
 
@@ -123,9 +137,14 @@ public class WantedDetailsActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    /**
+     * Permet de charger toutes les images d'une personne recherchée
+     * @param imageUrl URLs de l'image qu'il afficher
+     */
     @SuppressLint("StaticFieldLeak")
     private void loadImagesFromUrl(String ...imageUrl) {
         new AsyncTask<String, Void, ArrayList<Bitmap>>() {
+
             @Override
             protected ArrayList<Bitmap> doInBackground(String... urls) {
                 ArrayList<Bitmap> bitmaps = new ArrayList<>();
@@ -150,6 +169,10 @@ public class WantedDetailsActivity extends AppCompatActivity {
         }.execute(imageUrl);
     }
 
+    /**
+     * Ajoute une image au layout de la page des détails liée à une enquête du FBI
+     * @param bitmap Bitmap de l'image à ajouter
+     */
     private void addImage(Bitmap bitmap){
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(bitmap);
@@ -166,11 +189,17 @@ public class WantedDetailsActivity extends AppCompatActivity {
         imageLayout.addView(imageView);
     }
 
+    /**
+     * Méthode qui s'effectue avant la rotation de l'écran
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Méthode qui s'effectue après rotation (réaffiche les images)
+     */
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);

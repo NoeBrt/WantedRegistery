@@ -25,6 +25,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public DBHandler(Context context) { super(context, DATABASE_NAME, null, DATABASE_VERSION); }
 
+    /**
+     * Permet la création des deux tables de la BD, Data et Images
+     * @param db DB où créer les tables
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query =  "CREATE TABLE " + DBContract.Form.TABLE_NAME + " (" +
@@ -59,6 +63,32 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(query2);
     }
 
+    /**
+     * Insère TOUTES les données liées à une personne recherchée dans la BD
+     * (dont les URLs des images dans la table Images)
+     * @param photo
+     * @param images
+     * @param name
+     * @param subject
+     * @param uid
+     * @param weight
+     * @param dateOfBirthUsed
+     * @param age
+     * @param hair
+     * @param eyes
+     * @param height
+     * @param sex
+     * @param race
+     * @param nationality
+     * @param scarsAndMarks
+     * @param ncic
+     * @param reward
+     * @param aliases
+     * @param remarks
+     * @param caution
+     * @param cr
+     * @throws FileNotFoundException
+     */
     public void insertWanted(byte[] photo, ArrayList<String> images, String name, String subject, String uid, String weight, String dateOfBirthUsed, String age, String hair, String eyes, String height, String sex, String race, String nationality, String scarsAndMarks, String ncic, String reward, String aliases, String remarks, String caution, ContentResolver cr) throws FileNotFoundException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues row = new ContentValues();
@@ -93,6 +123,12 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Permet la MAJ de la BD (non utilisé)
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String query = "DROP TABLE IF EXISTS " + DBContract.Form.TABLE_NAME;
@@ -102,6 +138,11 @@ public class DBHandler extends SQLiteOpenHelper {
         //DB2 PAS UTILE -> NON UTILISE
     }
 
+    /**
+     * Récupère les 'limit' premières personnes sur la BD
+     * @param limit Limite de personnes à sélectionner
+     * @return Liste des personnes récupérées sur la BD
+     */
     public ArrayList<WantedPerson> select(int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME;
@@ -137,6 +178,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return responses;
     }
 
+    /**
+     * Récupère les données d'une personne précise sur la BD
+     * @param uid UID utilisé pour préciser la personne qui est recherchée
+     * @return Objet WantedPerson de la personne recherchée
+     */
     public WantedPerson select(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME + " WHERE " + DBContract.Form.COLUMN_UID + " = '" + uid + "'";
@@ -169,6 +215,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return wantedPerson;
     }
 
+    /**
+     * Permet de selectionner toutes les URLs des images d'une personne
+     * @param uid UID de la personne en question
+     * @return Un objet ArrayList contenant tous les URLs
+     */
     public ArrayList<String> selectImages(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + DBContract.Form.TABLE_NAME2 + " WHERE "
@@ -188,21 +239,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return responses;
     }
 
+    /**
+     * Permet de supprimer les dexu tables de la BD
+     */
     public void deleteForm () {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DBContract.Form.TABLE_NAME, null, null);
         db.delete(DBContract.Form.TABLE_NAME2, null, null);
-    }
-
-    public void deleteFormUID(String uid){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String selection = DBContract.Form.COLUMN_UID + " LIKE ?";
-        String[] selectionArgs = { uid };
-        db.delete(DBContract.Form.TABLE_NAME, selection, selectionArgs);
-
-        String selection2 = DBContract.Form.COLUMN_UID + " LIKE ?";
-        db.delete(DBContract.Form.TABLE_NAME2, selection2, selectionArgs);
     }
 }
 

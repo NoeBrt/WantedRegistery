@@ -92,6 +92,10 @@ public class WantedPerson {
         return photo;
     }
 
+    /**
+     * Permet de récupérer la photo de profil (ici en format Bitmap) sous format byte[]
+     * @return Photo convertie en format byte[]
+     */
     public byte[] getPhotoByte() {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -258,9 +262,7 @@ public class WantedPerson {
         this.caution = caution;
     }
 
-
-    /*
-    public ArrayList<byte[]> getImagesBytes() {
+    /* public ArrayList<byte[]> getImagesBytes() {
         ArrayList<byte[]> imagesByte = new ArrayList<>();
         for (Bitmap image : images) {
             try {
@@ -276,8 +278,12 @@ public class WantedPerson {
         }
 
         return imagesByte;
-    }
-*/
+    } */
+
+    /**
+     * Renvoie les données de description sur une personne pour l'affichage détaillé
+     * @return LinkedHashMap contenat ces données
+     */
     public LinkedHashMap<String,String> getDescriptionContent() {
         LinkedHashMap<String,String> content = new LinkedHashMap<String,String>();
         content.put("Date of Birth",dateOfBirthUsed);
@@ -293,6 +299,10 @@ public class WantedPerson {
         return content;
     }
 
+    /**
+     * Renvoie des données additionnelles sur une personne pour l'affichage détaillé
+     * @return LinkedHashMap contenat ces données
+     */
     public LinkedHashMap<String,String> getAdditionalContent() {
         LinkedHashMap<String,String> content = new LinkedHashMap<String,String>();
         String aliasesText= String.join(",", aliases);
